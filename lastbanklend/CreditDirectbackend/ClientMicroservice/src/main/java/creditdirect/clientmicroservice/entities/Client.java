@@ -3,7 +3,6 @@ package creditdirect.clientmicroservice.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.List;
 
 @Getter
@@ -30,7 +29,11 @@ public class Client {
 
     @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumber;
-    // Relationship with Dossier
+
+
+
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Dossier> dossiers;
+    private List<DemandeDeCredit> demandesDeCredit; // Renamed from demandeCredits
+
+    // Other fields and relationships as needed
 }
