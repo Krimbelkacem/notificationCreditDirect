@@ -1,6 +1,4 @@
 package creditdirect.clientmicroservice.repositories;
-
-
 import creditdirect.clientmicroservice.entities.TypeFinancement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
