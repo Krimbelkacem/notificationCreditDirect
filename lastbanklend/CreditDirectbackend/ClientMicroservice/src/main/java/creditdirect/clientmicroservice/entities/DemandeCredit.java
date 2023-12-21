@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "DemandeDeCredit")
-public class DemandeDeCredit {
+@Table(name = "DemandeCredit")
+public class DemandeCredit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

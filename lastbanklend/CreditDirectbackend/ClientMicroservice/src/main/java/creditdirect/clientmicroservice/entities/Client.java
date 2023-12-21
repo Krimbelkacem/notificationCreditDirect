@@ -33,7 +33,7 @@ public class Client {
 
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<DemandeDeCredit> demandesDeCredit; // Renamed from demandeCredits
+    private List<DemandeCredit> demandesDeCredit; // Renamed from demandeCredits
 
     // Other fields and relationships as needed
 }
