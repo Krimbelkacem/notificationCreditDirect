@@ -31,9 +31,4 @@ public class Client {
     private String phoneNumber;
 
 
-
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<DemandeCredit> demandesDeCredit; // Renamed from demandeCredits
-
-    // Other fields and relationships as needed
 }

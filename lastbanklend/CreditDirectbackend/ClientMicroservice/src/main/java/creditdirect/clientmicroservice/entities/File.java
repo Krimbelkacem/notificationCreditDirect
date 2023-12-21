@@ -2,8 +2,7 @@
 
 package creditdirect.clientmicroservice.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.*;
 
 @Embeddable
 public class File {

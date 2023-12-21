@@ -1,6 +1,6 @@
 package creditdirect.clientmicroservice.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,15 +9,18 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "DemandeCredit")
-public class DemandeCredit {
+@Table(name = "Dossier")
+public class Dossier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "DemandeID")
+    @Column(name = "DossierID")
     private Long id;
 
     // Other fields for DemandeDeCredit entity
+    @ManyToOne
+    @JoinColumn(name = "client_id") // Name of the foreign key column in DemandeCredit table
+    private Client client; // Represents a single Client for each DemandeCredit
 
     @ManyToOne
     @JoinColumn(name = "TypeCreditID")
@@ -25,9 +28,10 @@ public class DemandeCredit {
 
     @ManyToOne
     @JoinColumn(name = "TypeFinancementID")
-    private TypeFinancement TypeFinancement; // Establishing ManyToOne relationship with FinancingType
+    private TypeFinancement typeFinancement; // Establishing ManyToOne relationship with FinancingType
 
     @ElementCollection
-    @CollectionTable(name = "CreditAttachments", joinColumns = @JoinColumn(name = "demande_id"))
+    @CollectionTable(name = "CreditAttachments", joinColumns = @JoinColumn(name = "Dossier_id"))
     private List<File> attachedFiles; // Store file information (name and path)
 }
+
