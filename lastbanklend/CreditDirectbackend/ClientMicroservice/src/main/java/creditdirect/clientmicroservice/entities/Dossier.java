@@ -32,6 +32,9 @@ public class Dossier {
 
     @ElementCollection
     @CollectionTable(name = "CreditAttachments", joinColumns = @JoinColumn(name = "Dossier_id"))
-    private List<File> attachedFiles; // Store file information (name and path)
+    private List<AttachedFile> attachedFiles;
+
+
+
 }
 
