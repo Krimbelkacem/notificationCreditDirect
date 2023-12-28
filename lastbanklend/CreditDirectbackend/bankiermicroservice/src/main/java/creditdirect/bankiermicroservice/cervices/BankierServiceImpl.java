@@ -32,5 +32,6 @@ public class BankierServiceImpl implements BankierService {
 
         // Return the response received from the client service
         return ResponseEntity.status(responseEntity.getStatusCode()).body(responseBody);
+
     }
 }
