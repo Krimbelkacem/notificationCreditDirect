@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 
 @Data
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "client_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "client")
 public class Client {
 
@@ -22,6 +24,8 @@ public class Client {
     @Column(name = "role")
     private RoleType role; // Define an enum RoleType for 'particulier' and 'entreprise'
 
-    // Getters and setters
+    @Column(name = "activated")
+    private boolean activated = false;
+
 
 }

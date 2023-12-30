@@ -1,9 +1,13 @@
 package creditdirect.clientmicrocervice.services;
 
 import creditdirect.clientmicrocervice.entities.Client;
+import creditdirect.clientmicrocervice.entities.Particulier;
 import creditdirect.clientmicrocervice.repositories.ClientRepository;
 import com.nimbusds.jose.*;
 
+import java.util.Optional;
+import java.util.UUID;
+import creditdirect.clientmicrocervice.repositories.ParticulierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -76,16 +80,32 @@ public class ClientServiceImpl implements ClientService {
     public String login(String email, String password) {
         Client client = clientRepository.findByEmail(email);
         if (client != null && passwordEncoder.matches(password, client.getPassword())) {
-            // Authentication successful, generate JWT token
-            return generateToken(email);
+
+
+         return generateToken(client);
         } else {
             return "Authentication failed";
         }
     }
-    private String generateToken(String email) {
+
+    private String getClientType(Client client) {
+        if (client instanceof Particulier) {
+            return "Particulier";
+        } else {
+            return "Client";
+        }
+    }
+
+    private String generateToken(Client client) {
         try {
+
+            String clientType = getClientType(client);
+            System.out.println("Logged in as " + clientType);
             JWTClaimsSet claims = new JWTClaimsSet.Builder()
-                    .subject(email)
+
+                    .subject(client.getEmail())
+                    .claim("clientType", clientType.toString())
+                    .claim("id", client.getId().toString()) // Include ID in the claim
                     .issueTime(new Date())
                     .expirationTime(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                     .build();
@@ -101,10 +121,44 @@ public class ClientServiceImpl implements ClientService {
 
             return signedJWT.serialize();
         } catch (JOSEException e) {
-            logger.error("Error generating JWT token for email: {}", email, e);
+            logger.error("Error generating JWT token for email: {}", client, e);
             // Add additional handling here if necessary
             return null;
         }
     }
+    @Autowired
+    private ParticulierRepository particulierRepository;
+    @Override
+    public Particulier subscribeParticulier(Particulier particulier) {
+        // Add any business logic or validation here before saving
+        return particulierRepository.save(particulier);
+    }
+
+    // Method to generate a random password
+    private String generateRandomPassword() {
+        // Generate a random UUID and remove dashes
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+
+        // Return a substring of the UUID as the password
+        return uuid.substring(0, 8); // You can adjust the length of the password as needed
+    }
+
+
+    @Override
+    public Client updateClientPassword(Long clientId, String password) {
+        Optional<Client> optionalClient = clientRepository.findById(clientId);
+
+        if (optionalClient.isPresent()) {
+            Client client = optionalClient.get();
+            String hashedPassword = passwordEncoder.encode(password);
+            client.setPassword(hashedPassword);
+            return clientRepository.save(client);
+        } else {
+            // Handle case where client with provided ID doesn't exist
+            // You can throw an exception or return null/throw a custom exception
+            return null;
+        }
+    }
+
 
 }

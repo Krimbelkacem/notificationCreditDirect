@@ -1,6 +1,7 @@
 package creditdirect.clientmicrocervice.services;
 
 import creditdirect.clientmicrocervice.entities.Client;
+import creditdirect.clientmicrocervice.entities.Particulier;
 
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface ClientService {
     Client registerClient(Client client);
     String login(String email, String password);
 
+
+    Particulier subscribeParticulier(Particulier particulier);
+
+    Client updateClientPassword(Long clientId, String newPassword);
 }

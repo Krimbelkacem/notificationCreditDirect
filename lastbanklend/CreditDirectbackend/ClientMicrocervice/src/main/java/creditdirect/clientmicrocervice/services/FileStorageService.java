@@ -2,7 +2,8 @@ package creditdirect.clientmicrocervice.services;
 
 
 import creditdirect.clientmicrocervice.config.FileStorageProperties;
-import creditdirect.clientmicrocervice.entities.PiecesJointes;
+import creditdirect.clientmicrocervice.entities.AttachedFile;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -32,8 +33,8 @@ public class FileStorageService {
         }
     }
 
-    public List<PiecesJointes> storePiecesJointes(MultipartFile[] files) {
-        List<PiecesJointes> attachedFiles = new ArrayList<>();
+    public List<AttachedFile> storeFiles(MultipartFile[] files) {
+        List<AttachedFile> attachedFiles = new ArrayList<>();
 
         for (MultipartFile file : files) {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -42,7 +43,7 @@ public class FileStorageService {
 
             try {
                 Files.copy(file.getInputStream(), Paths.get(filePath));
-                PiecesJointes attachedFile = new PiecesJointes();
+                AttachedFile attachedFile = new AttachedFile();
                 attachedFile.setFileName(fileName);
                 attachedFile.setFilePath(filePath);
                 attachedFiles.add(attachedFile);

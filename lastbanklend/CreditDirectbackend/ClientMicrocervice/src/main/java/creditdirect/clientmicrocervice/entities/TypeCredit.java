@@ -10,6 +10,7 @@ public class TypeCredit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
     @Column(name = "nom_credit")

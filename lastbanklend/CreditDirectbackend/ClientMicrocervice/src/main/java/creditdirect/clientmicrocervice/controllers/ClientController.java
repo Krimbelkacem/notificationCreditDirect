@@ -1,6 +1,7 @@
 package creditdirect.clientmicrocervice.controllers;
 
 import creditdirect.clientmicrocervice.entities.Client;
+import creditdirect.clientmicrocervice.entities.Particulier;
 import creditdirect.clientmicrocervice.repositories.ClientRepository;
 import creditdirect.clientmicrocervice.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,32 @@ public class ClientController {
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             return ResponseEntity.ok(response);
+        }
+    }
+
+
+    @PostMapping("/subscribe/particulier")
+    public ResponseEntity<Particulier> subscribeParticulier(@RequestBody Particulier particulier) {
+        Particulier subscribedParticulier = clientService.subscribeParticulier(particulier);
+        return new ResponseEntity<>(subscribedParticulier, HttpStatus.CREATED);
+    }
+    @PutMapping("/addpassword")
+    public ResponseEntity<String> updateClientPassword(@RequestParam Long id, @RequestBody Map<String, String> requestBody) {
+        String password = requestBody.get("password");
+
+        if (id == null || password == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request format");
+        }
+
+        System.out.println("Received request to update password for Client ID: " + id);
+
+        Client updatedClient = clientService.updateClientPassword(id, password);
+
+        if (updatedClient != null) {
+            return ResponseEntity.ok("Password updated successfully for Client ID: " + id);
+        } else {
+            System.out.println("Client with ID " + id + " not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client with ID " + id + " not found");
         }
     }
 
