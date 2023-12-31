@@ -47,8 +47,12 @@ public class Dossier {
     @ManyToOne
     @JoinColumn(name = "courtier_id") // Assuming this column holds the reference to the Courtier
     private Courtier assignedCourtier;
+
+
+
     @Enumerated(EnumType.STRING)
-    private DossierStatus status;
+    @Column(name = "status")
+    private DossierStatus status = DossierStatus.NON_TRAITEE;
 
     // Constructors, getters, and setters can be added here if needed
 }

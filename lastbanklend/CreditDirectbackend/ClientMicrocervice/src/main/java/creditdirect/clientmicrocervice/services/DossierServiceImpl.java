@@ -3,10 +3,7 @@ package creditdirect.clientmicrocervice.services;
 
 import creditdirect.clientmicrocervice.config.FileStorageProperties;
 import creditdirect.clientmicrocervice.entities.*;
-import creditdirect.clientmicrocervice.repositories.DossierRepository;
-import creditdirect.clientmicrocervice.repositories.ClientRepository;
-import creditdirect.clientmicrocervice.repositories.TypeCreditRepository;
-import creditdirect.clientmicrocervice.repositories.TypeFinancementRepository;
+import creditdirect.clientmicrocervice.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class DossierServiceImpl implements DossierService {
 
@@ -30,15 +28,17 @@ public class DossierServiceImpl implements DossierService {
     private final FileStorageService fileStorageService;
     private final TypeCreditRepository typeCreditRepository;
     private final TypeFinancementRepository typeFinancementRepository;
+    private final CourtierRepository courtierRepository;
     private final String uploadDir; // Injecting the upload directory
     @Autowired
     public DossierServiceImpl(DossierRepository dossierRepository, ClientRepository clientRepository,
                               FileStorageService fileStorageService, TypeCreditRepository typeCreditRepository,
-                              TypeFinancementRepository typeFinancementRepository,FileStorageProperties fileStorageProperties) {
+                              TypeFinancementRepository typeFinancementRepository,FileStorageProperties fileStorageProperties,CourtierRepository courtierRepository) {
         this.dossierRepository = dossierRepository;
         this.clientRepository = clientRepository;
         this.fileStorageService = fileStorageService;
         this.typeCreditRepository = typeCreditRepository;
+        this.courtierRepository = courtierRepository;
         this.typeFinancementRepository = typeFinancementRepository;
         this.uploadDir = fileStorageProperties.getUploadDir();
         initializeUploadDir();
@@ -106,7 +106,7 @@ public class DossierServiceImpl implements DossierService {
                 .orElseThrow(() -> new EntityNotFoundException("Courtier not found with id: " + courtierId));
 
         dossier.setAssignedCourtier(courtier);
-        dossier.setStatus(DossierStatus.NON_TRAITEE); // Assuming a new assignment resets status
+        dossier.setStatus(DossierStatus.TRAITEMENT_ENCOURS); // Assuming a new assignment resets status
 
         return dossierRepository.save(dossier);
     }

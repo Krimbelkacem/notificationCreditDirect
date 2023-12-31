@@ -1,6 +1,7 @@
 package creditdirect.clientmicrocervice.entities;
 
 public enum DossierStatus {
-    TRAITEE,
-    NON_TRAITEE
+    NON_TRAITEE,
+    TRAITEMENT_ENCOURS,
+    TRAITEE
 }

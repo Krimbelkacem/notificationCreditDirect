@@ -66,7 +66,7 @@ public class DossierController {
         Long dossierId = dossierService.addDossier(clientId, typeCreditId, typeFinancementId, files, simulationInfo);
 
         // Send dossier ID to Kafka topic
-        kafkaProducer.sendDossierToKafka("dossier-topic", String.valueOf(dossierId));
+      //  kafkaProducer.sendDossierToKafka("dossier-topic", String.valueOf(dossierId));
 
         return dossierId;
     }

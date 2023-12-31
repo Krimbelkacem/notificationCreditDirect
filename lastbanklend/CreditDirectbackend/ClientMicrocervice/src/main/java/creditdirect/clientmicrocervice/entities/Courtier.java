@@ -11,6 +11,9 @@ import java.util.List;
 @Entity
 @PrimaryKeyJoinColumn(name = "courtier_id")
 public class Courtier extends Bankier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "nom")
     private String nom;
