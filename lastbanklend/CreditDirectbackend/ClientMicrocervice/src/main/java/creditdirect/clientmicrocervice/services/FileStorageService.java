@@ -33,13 +33,22 @@ public class FileStorageService {
         }
     }
 
-    public List<AttachedFile> storeFiles(MultipartFile[] files) {
+    public List<AttachedFile> storeFilesForDossier(MultipartFile[] files, Long dossierId) {
         List<AttachedFile> attachedFiles = new ArrayList<>();
+        Path dossierDirectory = this.fileStorageLocation.resolve(String.valueOf(dossierId));
+
+        if (!Files.exists(dossierDirectory)) {
+            try {
+                Files.createDirectory(dossierDirectory);
+            } catch (IOException ex) {
+                // Handle directory creation exception
+            }
+        }
 
         for (MultipartFile file : files) {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             String fileUuid = UUID.randomUUID().toString();
-            String filePath = this.fileStorageLocation.resolve(fileUuid + "-" + fileName).toString();
+            String filePath = dossierDirectory.resolve(fileUuid + "-" + fileName).toString();
 
             try {
                 Files.copy(file.getInputStream(), Paths.get(filePath));

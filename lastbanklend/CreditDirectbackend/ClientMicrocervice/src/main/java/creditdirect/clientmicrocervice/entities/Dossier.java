@@ -31,7 +31,6 @@ public class Dossier {
     private TypeCredit typeCredit;
 
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_financement_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -45,15 +44,17 @@ public class Dossier {
     private String simulationInfo;
 
     @ManyToOne
-    @JoinColumn(name = "courtier_id") // Assuming this column holds the reference to the Courtier
+    @JoinColumn(name = "courtier_id")
     private Courtier assignedCourtier;
-
 
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private DossierStatus status = DossierStatus.NON_TRAITEE;
 
-    // Constructors, getters, and setters can be added here if needed
+
+    @ManyToOne
+    @JoinColumn(name = "agence_id") // Nom de la colonne pour la clé étrangère vers Agence
+    private Agence agence;
 }
 

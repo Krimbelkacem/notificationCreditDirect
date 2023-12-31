@@ -21,8 +21,10 @@ public class Courtier extends Bankier {
     @Column(name = "prenom")
     private String prenom;
 
-    @OneToMany(mappedBy = "assignedCourtier") // Assuming a mappedBy relationship exists in Dossier class
-    private List<Dossier> dossiers;
+    @ManyToOne
+    @JoinColumn(name = "agence_id") // Nom de la colonne pour la clé étrangère
+    private Agence agence;
+
 
 
 }

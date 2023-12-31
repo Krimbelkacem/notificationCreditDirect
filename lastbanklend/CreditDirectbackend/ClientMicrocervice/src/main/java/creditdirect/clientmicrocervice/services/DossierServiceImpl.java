@@ -44,7 +44,6 @@ public class DossierServiceImpl implements DossierService {
         initializeUploadDir();
 
     }
-
     @Override
     public Long addDossier(Long clientId, Long typeCreditId, Long typeFinancementId, MultipartFile[] files, String simulationInfo) {
         Dossier dossier = new Dossier();
@@ -61,11 +60,17 @@ public class DossierServiceImpl implements DossierService {
                 .orElseThrow(() -> new RuntimeException("TypeFinancement not found"));
         dossier.setTypeFinancement(typeFinancement);
 
-        List<AttachedFile> attachedFiles = fileStorageService.storeFiles(files);
-        dossier.setAttachedFiles(attachedFiles);
         dossier.setSimulationInfo(simulationInfo);
 
         Dossier savedDossier = dossierRepository.save(dossier);
+
+        // Store uploaded files for the specific Dossier
+        List<AttachedFile> attachedFiles = fileStorageService.storeFilesForDossier(files, savedDossier.getId());
+        savedDossier.setAttachedFiles(attachedFiles);
+
+        // Update the saved Dossier with attached files
+        savedDossier = dossierRepository.save(savedDossier);
+
         return savedDossier.getId();
     }
 
@@ -98,6 +103,7 @@ public class DossierServiceImpl implements DossierService {
         // Assuming you have a method in DossierRepository to find dossiers by client ID
         return dossierRepository.findByClientId(clientId);
     }
+    @Override
     public Dossier assignDossierToCourtier(Long dossierId, Long courtierId) {
         Dossier dossier = dossierRepository.findById(dossierId)
                 .orElseThrow(() -> new EntityNotFoundException("Dossier not found with id: " + dossierId));
