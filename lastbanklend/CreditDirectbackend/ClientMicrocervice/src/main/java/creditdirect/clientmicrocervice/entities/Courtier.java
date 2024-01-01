@@ -2,6 +2,7 @@ package creditdirect.clientmicrocervice.entities;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import jakarta.persistence.*;
 
@@ -21,10 +22,8 @@ public class Courtier extends Bankier {
     @Column(name = "prenom")
     private String prenom;
 
-    @ManyToOne
-    @JoinColumn(name = "agence_id") // Nom de la colonne pour la clé étrangère
-    private Agence agence;
-
+    @Column(name = "agence_id") // Colonne pour stocker l'ID de l'agence
+    private Long agenceId;
 
 
 }

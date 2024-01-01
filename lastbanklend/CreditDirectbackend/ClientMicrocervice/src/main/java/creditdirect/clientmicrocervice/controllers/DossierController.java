@@ -42,18 +42,7 @@ public class DossierController {
         return dossierService.getDossiersByClientId(clientId);
     }
 
-    /*@PostMapping("/client/{clientId}")
-    public Dossier addDossierForClient(@PathVariable Long clientId, @RequestBody Dossier dossier) {
-        return dossierService.addDossierForClient(clientId, dossier);
-    }
-    @PostMapping("/client/{clientId}/upload")
-    public Dossier addDossierForClientWithFiles(
-            @PathVariable Long clientId,
-            @RequestBody Dossier dossier,
-            @RequestParam("files") List<MultipartFile> files
-    ) {
-        return dossierService.addDossierForClientWithFiles(clientId, dossier, files);
-    }*/
+
     @PostMapping("/add")
     public Long addDossier(
             @RequestParam("client_id") Long clientId,
@@ -78,4 +67,18 @@ public class DossierController {
         return ResponseEntity.ok(assignedDossier);
     }
 
+
+    @GetMapping("/{courtierAgenceId}/dossiersnotassigned")
+    public List<Dossier> getDossiersForCourtier(@PathVariable Long courtierAgenceId) {
+        return dossierService.getDossiersForCourtier(courtierAgenceId);
+    }
+
+
+
+
+/// dosiieers traitte par le courtier
+    @GetMapping("/courtier/{courtierId}/traitee")
+    public List<Dossier> getTraiteeDossiersByCourtierId(@PathVariable Long courtierId) {
+        return dossierService.getTraiteeDossiersByCourtier(courtierId);
+    }
 }

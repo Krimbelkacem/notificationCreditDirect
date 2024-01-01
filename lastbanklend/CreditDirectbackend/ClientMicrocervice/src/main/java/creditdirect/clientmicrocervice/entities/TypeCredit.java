@@ -16,6 +16,6 @@ public class TypeCredit {
     @Column(name = "nom_credit")
     private String nomCredit;
 
-    @Column(name = "id_financement") // Foreign key column
+    @Column(name = "id_financement")
     private Long idFinancement;
 }

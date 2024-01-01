@@ -117,4 +117,22 @@ public class DossierServiceImpl implements DossierService {
         return dossierRepository.save(dossier);
     }
 
+
+    // courtier avoir les dossiers non traiter
+    @Override
+    public List<Dossier> getDossiersForCourtier(Long courtierAgenceId) {
+        return dossierRepository.findAllByAgenceIdAndStatus(courtierAgenceId, DossierStatus.NON_TRAITEE);
+    }
+
+
+
+
+
+
+    // dossiers traiter par le courtier
+    @Override
+    public List<Dossier> getTraiteeDossiersByCourtier(Long courtierId) {
+        return dossierRepository.findAllByAssignedCourtier_IdAndStatus(courtierId, DossierStatus.TRAITEE);
+    }
+
 }

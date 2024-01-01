@@ -40,11 +40,7 @@ public class ClientController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
-        Client createdClient = clientService.createClient(client);
-        return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
-    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Client> updateClient(@PathVariable("id") Long id, @RequestBody Client client) {

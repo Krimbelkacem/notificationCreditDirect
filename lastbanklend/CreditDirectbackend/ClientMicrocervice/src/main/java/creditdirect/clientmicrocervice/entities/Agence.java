@@ -2,6 +2,8 @@ package creditdirect.clientmicrocervice.entities;
 
 import lombok.Data;
 import jakarta.persistence.*;
+
+@Data
 @Entity
 @Table(name = "Agence")
 public class Agence {
@@ -16,6 +18,5 @@ public class Agence {
     @Column(name = "adresse")
     private String adresse;
 
-    // Autres attributs de l'agence, constructeurs, getters et setters
 }
 

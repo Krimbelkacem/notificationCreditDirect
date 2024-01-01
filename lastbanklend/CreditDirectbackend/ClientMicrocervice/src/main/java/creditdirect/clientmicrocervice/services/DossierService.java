@@ -9,11 +9,13 @@ public interface DossierService {
     List<Dossier> getAllDossiers();
     Dossier getDossierById(Long id);
     List<Dossier> getDossiersByClientId(Long clientId);
-   /* Dossier addDossierForClient(Long clientId, Dossier dossier);
-    Dossier addDossierForClientWithFiles(Long clientId, Dossier dossier, List<MultipartFile> files);
-*/
+
    Long addDossier(Long clientId, Long typeCreditId, Long typeFinancementId, MultipartFile[] files, String simulationInfo);
 
 
     Dossier assignDossierToCourtier(Long dossierId, Long courtierId);
+    List<Dossier> getDossiersForCourtier(Long courtierAgenceId);
+
+    List<Dossier> getTraiteeDossiersByCourtier(Long courtierId);
+
 }

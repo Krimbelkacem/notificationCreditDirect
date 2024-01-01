@@ -53,8 +53,7 @@ public class Dossier {
     private DossierStatus status = DossierStatus.NON_TRAITEE;
 
 
-    @ManyToOne
-    @JoinColumn(name = "agence_id") // Nom de la colonne pour la clé étrangère vers Agence
-    private Agence agence;
+    @Column(name = "agence_id")
+    private Long agenceId;
 }
 
