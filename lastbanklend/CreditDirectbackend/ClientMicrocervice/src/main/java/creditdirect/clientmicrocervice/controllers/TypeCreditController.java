@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -33,7 +35,7 @@ public class TypeCreditController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
+    @GetMapping("/ad")
     public ResponseEntity<TypeCredit> createTypeCredit(@RequestBody TypeCredit typeCredit) {
         TypeCredit createdTypeCredit = typeCreditService.createTypeCredit(typeCredit);
         return new ResponseEntity<>(createdTypeCredit, HttpStatus.CREATED);
@@ -51,5 +53,23 @@ public class TypeCreditController {
     public ResponseEntity<Void> deleteTypeCredit(@PathVariable("id") Long id) {
         typeCreditService.deleteTypeCredit(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<TypeCredit> createTypeCredit(@RequestParam("nomCredit") String nomCredit,
+                                                       @RequestParam("idFinancement") Long idFinancement,
+                                                       @RequestParam(value = "prix", required = false) Double prix,
+                                                       @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+        TypeCredit typeCredit = new TypeCredit();
+        typeCredit.setNomCredit(nomCredit);
+        typeCredit.setIdFinancement(idFinancement);
+        typeCredit.setPrix(prix);
+
+        TypeCredit savedTypeCredit = typeCreditService.saveTypeCredit(typeCredit, imageFile);
+        if (savedTypeCredit != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedTypeCredit);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

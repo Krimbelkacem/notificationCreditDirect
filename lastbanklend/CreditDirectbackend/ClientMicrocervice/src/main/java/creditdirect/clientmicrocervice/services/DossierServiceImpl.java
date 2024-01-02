@@ -28,17 +28,17 @@ public class DossierServiceImpl implements DossierService {
     private final FileStorageService fileStorageService;
     private final TypeCreditRepository typeCreditRepository;
     private final TypeFinancementRepository typeFinancementRepository;
-    private final CourtierRepository courtierRepository;
+    private final CompteRepository compteRepository;
     private final String uploadDir; // Injecting the upload directory
     @Autowired
     public DossierServiceImpl(DossierRepository dossierRepository, ClientRepository clientRepository,
                               FileStorageService fileStorageService, TypeCreditRepository typeCreditRepository,
-                              TypeFinancementRepository typeFinancementRepository,FileStorageProperties fileStorageProperties,CourtierRepository courtierRepository) {
+                              TypeFinancementRepository typeFinancementRepository,FileStorageProperties fileStorageProperties,CompteRepository compteRepository) {
         this.dossierRepository = dossierRepository;
         this.clientRepository = clientRepository;
         this.fileStorageService = fileStorageService;
         this.typeCreditRepository = typeCreditRepository;
-        this.courtierRepository = courtierRepository;
+        this.compteRepository = compteRepository;
         this.typeFinancementRepository = typeFinancementRepository;
         this.uploadDir = fileStorageProperties.getUploadDir();
         initializeUploadDir();
@@ -108,8 +108,10 @@ public class DossierServiceImpl implements DossierService {
         Dossier dossier = dossierRepository.findById(dossierId)
                 .orElseThrow(() -> new EntityNotFoundException("Dossier not found with id: " + dossierId));
 
-        Courtier courtier = courtierRepository.findById(courtierId)
+
+        Compte courtier = compteRepository.findById(courtierId)
                 .orElseThrow(() -> new EntityNotFoundException("Courtier not found with id: " + courtierId));
+
 
         dossier.setAssignedCourtier(courtier);
         dossier.setStatus(DossierStatus.TRAITEMENT_ENCOURS); // Assuming a new assignment resets status
@@ -120,8 +122,8 @@ public class DossierServiceImpl implements DossierService {
 
     // courtier avoir les dossiers non traiter
     @Override
-    public List<Dossier> getDossiersForCourtier(Long courtierAgenceId) {
-        return dossierRepository.findAllByAgenceIdAndStatus(courtierAgenceId, DossierStatus.NON_TRAITEE);
+    public List<Dossier> getDossiersForCourtier(Long courtierId) {
+        return dossierRepository.findAllByAgenceIdAndStatus(courtierId, DossierStatus.NON_TRAITEE);
     }
 
 
@@ -133,6 +135,17 @@ public class DossierServiceImpl implements DossierService {
     @Override
     public List<Dossier> getTraiteeDossiersByCourtier(Long courtierId) {
         return dossierRepository.findAllByAssignedCourtier_IdAndStatus(courtierId, DossierStatus.TRAITEE);
+    }
+
+
+
+    @Override
+    public void updateDossierStatusToTraitee(Long dossierId) {
+        Optional<Dossier> dossierOptional = dossierRepository.findById(dossierId);
+        dossierOptional.ifPresent(dossier -> {
+            dossier.setStatus(DossierStatus.TRAITEE);
+            dossierRepository.save(dossier);
+        });
     }
 
 }

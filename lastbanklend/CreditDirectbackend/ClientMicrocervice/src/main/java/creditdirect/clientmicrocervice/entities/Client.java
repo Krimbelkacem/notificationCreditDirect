@@ -20,9 +20,7 @@ public class Client {
     @Column(name = "email")
     private String email;
 
-    @Enumerated(EnumType.STRING) // Using EnumType.STRING for role, assuming it's an enum
-    @Column(name = "role")
-    private RoleType role; // Define an enum RoleType for 'particulier' and 'entreprise'
+
 
     @Column(name = "activated")
     private boolean activated = false;

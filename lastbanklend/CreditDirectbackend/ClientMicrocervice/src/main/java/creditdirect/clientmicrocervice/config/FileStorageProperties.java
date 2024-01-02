@@ -13,5 +13,5 @@ public class FileStorageProperties {
 
     private String uploadDir;
 
-    // getters and setters
+
 }

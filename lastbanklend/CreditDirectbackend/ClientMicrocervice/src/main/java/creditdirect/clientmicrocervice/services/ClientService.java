@@ -14,7 +14,7 @@ public interface ClientService {
 
 
 
-    Client registerClient(Client client);
+
     String login(String email, String password);
 
 

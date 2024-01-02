@@ -19,7 +19,7 @@ public class Dossier {
     @Column(name = "DossierID")
     private Long id;
 
-    // Other fields for DemandeDeCredit entity
+
     @ManyToOne
     @JoinColumn(name = "client_id") // Name of the foreign key column in DemandeCredit table
     private Client client; // Represents a single Client for each DemandeCredit
@@ -45,7 +45,7 @@ public class Dossier {
 
     @ManyToOne
     @JoinColumn(name = "courtier_id")
-    private Courtier assignedCourtier;
+    private Compte assignedCourtier;
 
 
     @Enumerated(EnumType.STRING)

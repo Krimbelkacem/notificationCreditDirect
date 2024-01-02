@@ -10,7 +10,6 @@ public class TypeCredit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
 
     @Column(name = "nom_credit")
@@ -18,4 +17,19 @@ public class TypeCredit {
 
     @Column(name = "id_financement")
     private Long idFinancement;
+
+
+    @Column(name = "prix", nullable = true)
+    private Double prix;
+
+    @Column(name = "image")
+    private String image;
+
+    public void setImagePath(String imagePath) {
+        this.image = imagePath;
+    }
+
+    public String getImagePath() {
+        return this.image;
+    }
 }

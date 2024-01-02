@@ -39,6 +39,6 @@ public class Particulier extends Client {
     @Column(name = "resides_in_algeria")
     private boolean residesInAlgeria;
 
-    // Other getters and setters
+
 
 }

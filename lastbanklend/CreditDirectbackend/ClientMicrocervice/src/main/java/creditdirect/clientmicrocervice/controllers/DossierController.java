@@ -26,8 +26,8 @@ public class DossierController {
         this.kafkaProducer = kafkaProducer;
     }
 
-    @GetMapping
-    @PreAuthorize("hasRole('BANKIER')")
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<List<Dossier>> getAllDossiers() {
         List<Dossier> dossiers = dossierService.getAllDossiers();
         return new ResponseEntity<>(dossiers, HttpStatus.OK);
@@ -80,5 +80,13 @@ public class DossierController {
     @GetMapping("/courtier/{courtierId}/traitee")
     public List<Dossier> getTraiteeDossiersByCourtierId(@PathVariable Long courtierId) {
         return dossierService.getTraiteeDossiersByCourtier(courtierId);
+    }
+
+
+
+
+    @PutMapping("/{dossierId}/mark-as-traitee")
+    public void markDossierAsTraitee(@PathVariable Long dossierId) {
+        dossierService.updateDossierStatusToTraitee(dossierId);
     }
 }

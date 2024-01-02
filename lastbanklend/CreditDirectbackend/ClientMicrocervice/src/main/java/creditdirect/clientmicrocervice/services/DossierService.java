@@ -18,4 +18,5 @@ public interface DossierService {
 
     List<Dossier> getTraiteeDossiersByCourtier(Long courtierId);
 
+    void updateDossierStatusToTraitee(Long dossierId);
 }

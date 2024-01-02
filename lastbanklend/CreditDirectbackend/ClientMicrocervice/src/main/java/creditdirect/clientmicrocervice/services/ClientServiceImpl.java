@@ -69,12 +69,7 @@ public class ClientServiceImpl implements ClientService {
 
 
 
-    @Override
-    public Client registerClient(Client client) {
-        // Encrypt the password before saving
-        client.setPassword(passwordEncoder.encode(client.getPassword()));
-        return clientRepository.save(client);
-    }
+
 
     @Override
     public String login(String email, String password) {

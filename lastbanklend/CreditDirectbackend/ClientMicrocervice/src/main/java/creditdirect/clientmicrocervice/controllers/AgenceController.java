@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/agences")
+@RequestMapping("/agences")
 public class AgenceController {
 
     @Autowired

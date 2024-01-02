@@ -55,11 +55,6 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Client> registerClient(@RequestBody Client client) {
-        Client savedClient = clientService.registerClient(client);
-        return new ResponseEntity<>(savedClient, HttpStatus.CREATED);
-    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {

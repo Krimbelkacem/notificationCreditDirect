@@ -33,7 +33,7 @@ public class TypeFinancementController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
+    @PostMapping("/ad")
     public ResponseEntity<TypeFinancement> createTypeFinancement(@RequestBody TypeFinancement typeFinancement) {
         TypeFinancement createdTypeFinancement = typeFinancementService.createTypeFinancement(typeFinancement);
         return new ResponseEntity<>(createdTypeFinancement, HttpStatus.CREATED);
