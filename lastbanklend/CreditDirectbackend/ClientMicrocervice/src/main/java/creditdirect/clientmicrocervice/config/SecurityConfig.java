@@ -55,7 +55,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-   /*@Bean
+   @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeRequests().anyRequest().permitAll();
@@ -64,8 +64,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-*/
 
+/*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -99,7 +99,7 @@ public class SecurityConfig {
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter();
         // Add any dependencies or configurations needed by JwtAuthenticationFilter
         return filter;
-    }
+    }*/
 }
 
 
