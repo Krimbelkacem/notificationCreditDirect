@@ -1,4 +1,5 @@
 package creditdirect.clientmicrocervice.entities;
+
 import lombok.Data;
 import jakarta.persistence.*;
 
@@ -6,11 +7,6 @@ import jakarta.persistence.*;
 @Data
 @PrimaryKeyJoinColumn(name = "particulier_id")
 public class Particulier extends Client {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-
 
     @Column(name = "civilite")
     private String civilite;
@@ -38,7 +34,6 @@ public class Particulier extends Client {
 
     @Column(name = "resides_in_algeria")
     private boolean residesInAlgeria;
-
 
 
 }
