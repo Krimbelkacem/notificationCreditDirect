@@ -103,4 +103,10 @@ public class ClientController {
         }
     }
 
+    @GetMapping("/activate")
+    public ResponseEntity<String> activateClientByEmail(@RequestParam("email") String email) {
+        clientService.activateClientByEmail(email);
+        return ResponseEntity.ok("Client with email " + email + " has been activated.");
+    }
+
 }

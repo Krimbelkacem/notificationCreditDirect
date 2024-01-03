@@ -8,6 +8,8 @@ import com.nimbusds.jose.*;
 import java.util.Optional;
 import java.util.UUID;
 import creditdirect.clientmicrocervice.repositories.ParticulierRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,10 +32,12 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final EmailService emailService;
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository, BCryptPasswordEncoder passwordEncoder) {
+    public ClientServiceImpl(ClientRepository clientRepository, BCryptPasswordEncoder passwordEncoder,EmailService emailService) {
         this.clientRepository = clientRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
 
@@ -123,12 +127,20 @@ public class ClientServiceImpl implements ClientService {
     }
     @Autowired
     private ParticulierRepository particulierRepository;
-    @Override
+   /* @Override
     public Particulier subscribeParticulier(Particulier particulier) {
         // Add any business logic or validation here before saving
         return particulierRepository.save(particulier);
     }
+*/
 
+
+    @Override
+    public Particulier subscribeParticulier(Particulier particulier) {
+        Particulier subscribedParticulier = particulierRepository.save(particulier);
+        emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
+        return subscribedParticulier;
+    }
     // Method to generate a random password
     private String generateRandomPassword() {
         // Generate a random UUID and remove dashes
@@ -156,4 +168,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
 
+    @Override
+    public void activateClientByEmail(String email) {
+        Client client = clientRepository.findByEmail(email);
+        if (client == null) {
+            throw new EntityNotFoundException("Client not found with email: " + email);
+        }
+
+        client.setActivated(true);
+        clientRepository.save(client);
+    }
 }
