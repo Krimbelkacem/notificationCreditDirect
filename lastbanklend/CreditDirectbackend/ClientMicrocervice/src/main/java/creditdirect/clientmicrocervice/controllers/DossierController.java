@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/dossiers")
@@ -42,7 +43,7 @@ public class DossierController {
         return dossierService.getDossiersByClientId(clientId);
     }
 
-
+/*
     @PostMapping("/add")
     public Long addDossier(
             @RequestParam("client_id") Long clientId,
@@ -58,7 +59,20 @@ public class DossierController {
       //  kafkaProducer.sendDossierToKafka("dossier-topic", String.valueOf(dossierId));
 
         return dossierId;
-    }
+    }*/
+@PostMapping("/add")
+public Long addDossier(@RequestBody Map<String, Object> requestBody) {
+    Long clientId = Long.parseLong(requestBody.get("client_id").toString());
+    Long typeCreditId = Long.parseLong(requestBody.get("type_credit_id").toString());
+    Long typeFinancementId = Long.parseLong(requestBody.get("type_financement_id").toString());
+    MultipartFile[] files = (MultipartFile[]) requestBody.get("attachedFiles");
+    String simulationInfo = (String) requestBody.get("simulationInfo");
+
+    // Create dossier and save locally
+    Long dossierId = dossierService.addDossier(clientId, typeCreditId, typeFinancementId, files, simulationInfo);
+
+    return dossierId;
+}
 
 
     @PostMapping("/assign-dossier/{dossierId}/to-courtier/{courtierId}")
