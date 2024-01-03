@@ -56,9 +56,5 @@ public class Dossier {
     @Column(name = "agence_id")
     private Long agenceId;
 
-
-    @OneToOne(mappedBy = "dossier", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("dossier")
-    private Simulation simulation;
 }
 
