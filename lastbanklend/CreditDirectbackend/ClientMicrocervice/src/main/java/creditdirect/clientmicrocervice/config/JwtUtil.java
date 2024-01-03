@@ -47,5 +47,25 @@ public class JwtUtil {
         }
     }
 
-    // Getter and setter methods for secretKey and expirationTimeMs
+    public Long extractUserId(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();
+            return Long.parseLong(claimsSet.getSubject());
+        } catch (Exception e) {
+            // Gérer les exceptions en cas d'erreur lors de l'extraction de l'identifiant
+            return null;
+        }
+    }
+
+    public String extractRole(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();
+            return claimsSet.getStringClaim("role");
+        } catch (Exception e) {
+            // Gérer les exceptions en cas d'erreur lors de l'extraction du rôle
+            return null;
+        }
+    }
 }
