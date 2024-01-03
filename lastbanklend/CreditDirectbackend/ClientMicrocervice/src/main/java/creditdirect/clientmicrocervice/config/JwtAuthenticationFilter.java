@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String roleString = jwtUtil.extractRole(token); // Implement a method to extract user role
                 userRole = RoleType.valueOf(roleString);
             } catch (Exception e) {
-                // Handle exception, token validation failed
+
             }
         }
 
