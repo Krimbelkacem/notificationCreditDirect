@@ -26,28 +26,44 @@ public class DossierController {
         this.dossierService = dossierService;
         this.kafkaProducer = kafkaProducer;
     }
-
+///////////////get all dossiers////////////////////
     @GetMapping("/all")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<List<Dossier>> getAllDossiers() {
         List<Dossier> dossiers = dossierService.getAllDossiers();
         return new ResponseEntity<>(dossiers, HttpStatus.OK);
     }
+    ////////////////get dosssier by id dossiers /////////////////////////
     @GetMapping("/{id}")
     public Dossier getDossierById(@PathVariable Long id) {
         return dossierService.getDossierById(id);
     }
+
+
+    //////////////////get dossiiers by id client/////////////////
 
     @GetMapping("/client/{clientId}")
     public List<Dossier> getDossiersByClientId(@PathVariable Long clientId) {
         return dossierService.getDossiersByClientId(clientId);
     }
 
+    ///////////////////add dossier /////////////////
     @PostMapping("/adddossier")
     public ResponseEntity<Dossier> addDossier(@RequestBody Dossier dossier) {
         Dossier addedDossier = dossierService.addDossier(dossier);
         return ResponseEntity.ok(addedDossier);
     }
+/////////////////////update dossier add files/////////////////////////
+    @PostMapping("/{dossierId}/files")
+    public ResponseEntity<Dossier> updateFilesForDossier(
+            @PathVariable Long dossierId,
+            @RequestParam("files") MultipartFile[] files
+    ) {
+        Dossier updatedDossier = dossierService.updateFilesForDossier(dossierId, files);
+        return ResponseEntity.ok(updatedDossier);
+    }
+
+
    /*@PostMapping("/add")
     public Long addDossier(
             @RequestParam("client_id") Long clientId,
@@ -81,7 +97,7 @@ public Long addDossier(@RequestBody Map<String, Object> requestBody) {
     return dossierId;
 }
 */
-
+//////////////////////////////// asign dossiers to courtier///////////////////
     @PostMapping("/assign-dossier/{dossierId}/to-courtier/{courtierId}")
     public ResponseEntity<Dossier> assignDossierToCourtier(@PathVariable Long dossierId, @PathVariable Long courtierId) {
         Dossier assignedDossier = dossierService.assignDossierToCourtier(dossierId, courtierId);

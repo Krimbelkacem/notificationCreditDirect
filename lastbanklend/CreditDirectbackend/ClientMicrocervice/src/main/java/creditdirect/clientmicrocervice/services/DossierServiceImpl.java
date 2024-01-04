@@ -16,7 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 import jakarta.persistence.EntityManager;
 
 
@@ -72,6 +72,7 @@ public class DossierServiceImpl implements DossierService {
     @Override
     public Dossier addDossier(Dossier dossier) {
         Long clientId = dossier.getClient().getId();
+        System.out.println("id cient"+clientId);
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
         dossier.setClient(client);
@@ -86,7 +87,19 @@ public class DossierServiceImpl implements DossierService {
         }
 
         return dossierRepository.save(dossier);
-    }/*
+    }
+
+    @Override
+    public Dossier updateFilesForDossier(Long dossierId, MultipartFile[] files) {
+        Dossier dossier = dossierRepository.findById(dossierId)
+                .orElseThrow(() -> new RuntimeException("Dossier not found with id: " + dossierId));
+
+        List<AttachedFile> attachedFiles = fileStorageService.storeFilesForDossier(files, dossierId);
+        dossier.setAttachedFiles(attachedFiles);
+
+        return dossierRepository.save(dossier);
+    }
+    /*
    @Override
     public Long addDossier(Long clientId, Long typeCreditId, Long typeFinancementId, MultipartFile[] files, String simulationInfo) {
         Dossier dossier = new Dossier();
