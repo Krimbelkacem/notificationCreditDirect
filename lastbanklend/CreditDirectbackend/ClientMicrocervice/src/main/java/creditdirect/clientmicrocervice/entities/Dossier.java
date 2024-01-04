@@ -25,23 +25,17 @@ public class Dossier {
     private Client client; // Represents a single Client for each DemandeCredit
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_credit_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private TypeCredit typeCredit;
+    @Column(name = "type_credit")
+    private String typeCredit; // Change the type from TypeCredit to String
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_financement_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private TypeFinancement typeFinancement;
+    @Column(name = "type_financement")
+    private String typeFinancement;
 
     @ElementCollection
     @CollectionTable(name = "CreditAttachments", joinColumns = @JoinColumn(name = "Dossier_id"))
     private List<AttachedFile> attachedFiles;
 
-    @Column(columnDefinition = "json")
-    private String simulationInfo;
+
 
     @ManyToOne
     @JoinColumn(name = "courtier_id")
@@ -55,6 +49,47 @@ public class Dossier {
 
     @Column(name = "agence_id")
     private Long agenceId;
+
+
+
+    @Column(name = "montant_habitation")
+    private Double montantHabitation; // Montant de l'habitation
+
+    @Column(name = "revenue_emprunteur")
+    private Double revenueEmprunteur; // Revenue de l'emprunteur
+
+    @Column(name = "age_emprunteur")
+    private Integer ageEmprunteur; // L'âge de l'emprunteur
+
+    @Column(name = "credit_souhaite")
+    private Double creditSouhaite; // Le crédit souhaité
+
+    @Column(name = "duree_financement")
+    private Integer dureeFinancement; // La durée de financement
+
+
+
+    @Column(name = "revenue_co_emprunteur")
+    private Double revenueCoEmprunteur; // Revenue de co-emprunteur
+
+    @Column(name = "age_co_emprunteur")
+    private Integer ageCoEmprunteur; // L'âge de co-emprunteur
+
+
+
+    @Column(name = "montant_revenue_immobilier")
+    private Double montantRevenueImmobilier; // Mentionnez ce montant revenue immobilier
+
+
+
+    @Column(name = "montant_autre_revenue")
+    private Double montantAutreRevenue; // Mentionnez ce montant autre revenue
+
+
+
+    @Column(name = "montant_autre_financement_en_cours")
+    private Double montantAutreFinancementEnCours; // Mentionnez ce montant autre financement en cours
+
 
 }
 

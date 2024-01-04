@@ -17,7 +17,7 @@ public interface DossierService {
     Dossier getDossierById(Long id);
     List<Dossier> getDossiersByClientId(Long clientId);
 
-   Long addDossier(Long clientId, Long typeCreditId, Long typeFinancementId, MultipartFile[] files, String simulationInfo);
+  // Long addDossier(Long clientId, Long typeCreditId, Long typeFinancementId, MultipartFile[] files, String simulationInfo);
 
 
     Dossier assignDossierToCourtier(Long dossierId, Long courtierId);
@@ -26,4 +26,6 @@ public interface DossierService {
     List<Dossier> getTraiteeDossiersByCourtier(Long courtierId);
 
     void updateDossierStatusToTraitee(Long dossierId);
+
+    Dossier addDossier(Dossier dossier);
 }

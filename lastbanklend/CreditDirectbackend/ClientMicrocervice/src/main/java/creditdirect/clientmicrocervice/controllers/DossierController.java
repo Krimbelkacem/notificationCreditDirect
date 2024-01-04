@@ -43,8 +43,12 @@ public class DossierController {
         return dossierService.getDossiersByClientId(clientId);
     }
 
-
-    @PostMapping("/add")
+    @PostMapping("/adddossier")
+    public ResponseEntity<Dossier> addDossier(@RequestBody Dossier dossier) {
+        Dossier addedDossier = dossierService.addDossier(dossier);
+        return ResponseEntity.ok(addedDossier);
+    }
+   /*@PostMapping("/add")
     public Long addDossier(
             @RequestParam("client_id") Long clientId,
             @RequestParam("type_credit_id") Long typeCreditId,
@@ -59,7 +63,10 @@ public class DossierController {
       //  kafkaProducer.sendDossierToKafka("dossier-topic", String.valueOf(dossierId));
 
         return dossierId;
-    }
+    }*/
+
+
+
 /*@PostMapping("/add")
 public Long addDossier(@RequestBody Map<String, Object> requestBody) {
     Long clientId = Long.parseLong(requestBody.get("client_id").toString());

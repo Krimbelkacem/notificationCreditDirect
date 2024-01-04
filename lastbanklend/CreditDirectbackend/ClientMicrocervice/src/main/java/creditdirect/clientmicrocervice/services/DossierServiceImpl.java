@@ -54,7 +54,40 @@ public class DossierServiceImpl implements DossierService {
         initializeUploadDir();
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
+    public Dossier addDossier(Dossier dossier) {
+        Long clientId = dossier.getClient().getId();
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+        dossier.setClient(client);
+
+        Long agenceId = getSingleAgenceIdByParticulierId(clientId);
+
+        // Set the retrieved Agence ID to the Dossier if available
+        if (agenceId != null) {
+            Agence agence = agenceRepository.findById(agenceId)
+                    .orElseThrow(() -> new RuntimeException("Agence not found"));
+            dossier.setAgenceId(agenceId);
+        }
+
+        return dossierRepository.save(dossier);
+    }/*
+   @Override
     public Long addDossier(Long clientId, Long typeCreditId, Long typeFinancementId, MultipartFile[] files, String simulationInfo) {
         Dossier dossier = new Dossier();
 
@@ -62,18 +95,9 @@ public class DossierServiceImpl implements DossierService {
                 .orElseThrow(() -> new RuntimeException("Client not found"));
         dossier.setClient(client);
 
-        TypeCredit typeCredit = typeCreditRepository.findById(typeCreditId)
-                .orElseThrow(() -> new RuntimeException("TypeCredit not found"));
-        dossier.setTypeCredit(typeCredit);
-
-        TypeFinancement typeFinancement = typeFinancementRepository.findById(typeFinancementId)
-                .orElseThrow(() -> new RuntimeException("TypeFinancement not found"));
-        dossier.setTypeFinancement(typeFinancement);
-
-        dossier.setSimulationInfo(simulationInfo);
 
         // Retrieve the single Agence ID associated with the Particulier's Commune
-        Long agenceId = getSingleAgenceIdByParticulierId(clientId);
+       Long agenceId = getSingleAgenceIdByParticulierId(clientId);
 
         // Set the retrieved Agence ID to the Dossier if available
         if (agenceId != null) {
@@ -87,14 +111,14 @@ public class DossierServiceImpl implements DossierService {
         Dossier savedDossier = dossierRepository.save(dossier);
 
         // Store uploaded files for the specific Dossier
-        List<AttachedFile> attachedFiles = fileStorageService.storeFilesForDossier(files, savedDossier.getId());
-        savedDossier.setAttachedFiles(attachedFiles);
+        //List<AttachedFile> attachedFiles = fileStorageService.storeFilesForDossier(files, savedDossier.getId());
+      ///  savedDossier.setAttachedFiles(attachedFiles);
 
         // Update the saved Dossier with attached files
         savedDossier = dossierRepository.save(savedDossier);
 
         return savedDossier.getId();
-    }
+    }*/
 
 //////////////
 //////////////////////////////////////asign dossier to agence/////////////////////////////////
