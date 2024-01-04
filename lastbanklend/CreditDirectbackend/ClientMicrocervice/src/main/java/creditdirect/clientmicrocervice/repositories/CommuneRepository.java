@@ -6,5 +6,6 @@ import creditdirect.clientmicrocervice.entities.Commune;
 
 @Repository
 public interface CommuneRepository extends JpaRepository<Commune, Long> {
+    Commune findByCodePostal(String postalCode);
     // You can add custom query methods specific to Commune entity if needed
 }

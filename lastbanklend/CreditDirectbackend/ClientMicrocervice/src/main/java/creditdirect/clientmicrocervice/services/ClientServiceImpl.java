@@ -9,6 +9,7 @@ import com.nimbusds.jose.*;
 
 import java.util.*;
 
+import creditdirect.clientmicrocervice.repositories.CommuneRepository;
 import creditdirect.clientmicrocervice.repositories.ParticulierRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,7 +134,7 @@ public class ClientServiceImpl implements ClientService {
 */
 
 
-    @Override
+    /*@Override
     public Particulier subscribeParticulier(Particulier particulier) {
 
         String generatedPassword = generateRandomPassword();
@@ -141,10 +142,58 @@ public class ClientServiceImpl implements ClientService {
         String hashedPassword = passwordEncoder.encode(generatedPassword);
         particulier.setPassword(hashedPassword );
         Particulier subscribedParticulier = particulierRepository.save(particulier);
-      //  emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
+        emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
+
+        // Retrieve Commune based on postal code
+        String postalCode = particulier.getCodePostal(); // Assuming you have a method to get postal code from Particulier
+        Commune commune = communeRepository.findByCodePostal(postalCode);
+
+        if (commune != null) {
+            subscribedParticulier.setCommune(commune); // Associate Particulier with Commune
+            return particulierRepository.save(subscribedParticulier); // Save and return the updated Particulier
+        } else {
+            // Handle scenario when Commune is not found for the provided postal code
+            return null;
+        }
+
         return subscribedParticulier;
+    }*/
+
+
+    @Override
+    public Particulier subscribeParticulier(Particulier particulier) {
+        String generatedPassword = generateRandomPassword();
+        System.out.println("generated password: " + generatedPassword);
+
+        String hashedPassword = passwordEncoder.encode(generatedPassword);
+        particulier.setPassword(hashedPassword);
+
+        // Save the Particulier first
+        Particulier subscribedParticulier = particulierRepository.save(particulier);
+
+        emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
+
+        // Retrieve Commune based on postal code
+        String postalCode = particulier.getCodePostal(); // Assuming you have a method to get postal code from Particulier
+        Commune commune = communeRepository.findByCodePostal(postalCode);
+
+        if (commune != null) {
+            subscribedParticulier.setCommune(commune); // Associate Particulier with Commune
+            return particulierRepository.save(subscribedParticulier); // Save and return the updated Particulier
+        } else {
+            // Handle scenario when Commune is not found for the provided postal code
+            return null;
+        }
     }
-/////////////// generate password ////////////////////////////
+
+
+
+
+
+
+
+
+    /////////////// generate password ////////////////////////////
     private String generateRandomPassword() {
 
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -153,7 +202,8 @@ public class ClientServiceImpl implements ClientService {
         return uuid.substring(0, 8);
     }
 
-
+    @Autowired
+    private CommuneRepository communeRepository;
     @Override
     public Client updateClientPassword(Long clientId, String password) {
         Optional<Client> optionalClient = clientRepository.findById(clientId);
