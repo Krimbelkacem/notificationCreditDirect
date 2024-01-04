@@ -22,4 +22,6 @@ public interface ClientService {
 
     Client updateClientPassword(Long clientId, String newPassword);
     void activateClientByEmail(String email);
+
+
 }

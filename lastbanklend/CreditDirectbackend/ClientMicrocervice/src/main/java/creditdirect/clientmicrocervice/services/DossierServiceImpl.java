@@ -5,19 +5,20 @@ import creditdirect.clientmicrocervice.config.FileStorageProperties;
 import creditdirect.clientmicrocervice.entities.*;
 import creditdirect.clientmicrocervice.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import jakarta.persistence.EntityManager;
+
 
 
 @Service
@@ -26,20 +27,29 @@ public class DossierServiceImpl implements DossierService {
     private final DossierRepository dossierRepository;
     private final ClientRepository clientRepository;
     private final FileStorageService fileStorageService;
+
+    private final ParticulierRepository particulierRepository;
     private final TypeCreditRepository typeCreditRepository;
     private final TypeFinancementRepository typeFinancementRepository;
+    private final AgenceRepository agenceRepository;
     private final CompteRepository compteRepository;
     private final String uploadDir; // Injecting the upload directory
+    private final EntityManager entityManager;
     @Autowired
     public DossierServiceImpl(DossierRepository dossierRepository, ClientRepository clientRepository,
                               FileStorageService fileStorageService, TypeCreditRepository typeCreditRepository,
-                              TypeFinancementRepository typeFinancementRepository,FileStorageProperties fileStorageProperties,CompteRepository compteRepository) {
+                              TypeFinancementRepository typeFinancementRepository,FileStorageProperties fileStorageProperties,
+                              CompteRepository compteRepository,ParticulierRepository particulierRepository, EntityManager entityManager,AgenceRepository agenceRepository) {
         this.dossierRepository = dossierRepository;
         this.clientRepository = clientRepository;
         this.fileStorageService = fileStorageService;
         this.typeCreditRepository = typeCreditRepository;
         this.compteRepository = compteRepository;
         this.typeFinancementRepository = typeFinancementRepository;
+        this.agenceRepository = agenceRepository;
+        this.particulierRepository =particulierRepository;
+        this.entityManager = entityManager;
+
         this.uploadDir = fileStorageProperties.getUploadDir();
         initializeUploadDir();
 
@@ -62,6 +72,18 @@ public class DossierServiceImpl implements DossierService {
 
         dossier.setSimulationInfo(simulationInfo);
 
+        // Retrieve the single Agence ID associated with the Particulier's Commune
+        Long agenceId = getSingleAgenceIdByParticulierId(clientId);
+
+        // Set the retrieved Agence ID to the Dossier if available
+        if (agenceId != null) {
+            Agence agence = agenceRepository.findById(agenceId)
+                    .orElseThrow(() -> new RuntimeException("Agence not found"));
+            dossier.setAgenceId(agenceId);
+        }
+
+
+
         Dossier savedDossier = dossierRepository.save(dossier);
 
         // Store uploaded files for the specific Dossier
@@ -74,8 +96,70 @@ public class DossierServiceImpl implements DossierService {
         return savedDossier.getId();
     }
 
+//////////////
+//////////////////////////////////////asign dossier to agence/////////////////////////////////
+/*@Override
+public Long getSingleAgenceIdByParticulierId(Long particulierId) {
+    Particulier particulier = particulierRepository.findById(particulierId).orElse(null);
+    System.out.println("id client"+particulierId);
+    if (particulier != null) {
+        Commune commune = particulier.getCommune();
+        System.out.println("comune"+commune);
+        if (commune != null) {
+            Set<Agence> agences = commune.getAgences();
+
+            System.out.println("agence"+agences);
+
+            if (agences.size() == 1) {
+                Agence singleAgence = agences.iterator().next();
+                System.out.println("is single   idagence"+singleAgence.getId());
+                return singleAgence.getId();
+            }
+        }
+    }
+
+    return null;
+}*/
+
+    @Override
+    public Long getSingleAgenceIdByParticulierId(Long particulierId) {
+        Particulier particulier = particulierRepository.findById(particulierId).orElse(null);
+
+        if (particulier != null) {
+            Commune commune = particulier.getCommune();
+
+            if (commune != null) {
+                List<Agence> agences = findAgencesByCommuneId(commune.getId());
+
+                if (agences.size() == 1) {
+                    System.out.println("cette commune aprtient a une seul agence");
+                    Agence singleAgence = agences.get(0);
+                    return singleAgence.getId();
+                }
+            }
+        }
+
+        return null;
+}
+
+    @Override
+    public List<Agence> findAgencesByCommuneId(Long communeId) {
+        String jpql = "SELECT a FROM Agence a JOIN a.communes c WHERE c.id = :communeId";
+        TypedQuery<Agence> query = entityManager.createQuery(jpql, Agence.class);
+        query.setParameter("communeId", communeId);
+        return query.getResultList();
+    }
 
 
+
+
+
+
+
+
+
+
+    ///////////////////////////////////////////////////
 
     private void initializeUploadDir() {
         Path path = Paths.get(uploadDir);

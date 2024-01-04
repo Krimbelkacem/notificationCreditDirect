@@ -1,21 +1,19 @@
 package creditdirect.clientmicrocervice.services;
 
+import creditdirect.clientmicrocervice.entities.Agence;
 import creditdirect.clientmicrocervice.entities.Client;
+import creditdirect.clientmicrocervice.entities.Commune;
 import creditdirect.clientmicrocervice.entities.Particulier;
 import creditdirect.clientmicrocervice.repositories.ClientRepository;
 import com.nimbusds.jose.*;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
 import creditdirect.clientmicrocervice.repositories.ParticulierRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
 
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -137,17 +135,22 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Particulier subscribeParticulier(Particulier particulier) {
+
+        String generatedPassword = generateRandomPassword();
+        System.out.println("generated passeword: " + generatedPassword);
+        String hashedPassword = passwordEncoder.encode(generatedPassword);
+        particulier.setPassword(hashedPassword );
         Particulier subscribedParticulier = particulierRepository.save(particulier);
-        emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
+      //  emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
         return subscribedParticulier;
     }
-    // Method to generate a random password
+/////////////// generate password ////////////////////////////
     private String generateRandomPassword() {
-        // Generate a random UUID and remove dashes
+
         String uuid = UUID.randomUUID().toString().replace("-", "");
 
-        // Return a substring of the UUID as the password
-        return uuid.substring(0, 8); // You can adjust the length of the password as needed
+
+        return uuid.substring(0, 8);
     }
 
 
@@ -178,4 +181,7 @@ public class ClientServiceImpl implements ClientService {
         client.setActivated(true);
         clientRepository.save(client);
     }
+
+
+
 }

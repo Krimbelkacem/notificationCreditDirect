@@ -4,6 +4,7 @@ import creditdirect.clientmicrocervice.entities.Client;
 import creditdirect.clientmicrocervice.entities.Particulier;
 import creditdirect.clientmicrocervice.repositories.ClientRepository;
 import creditdirect.clientmicrocervice.services.ClientService;
+import creditdirect.clientmicrocervice.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,14 @@ import java.util.Map;
 public class ClientController {
 
     private final ClientService clientService;
+    private final EmailService emailService;
 
     @Autowired
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, EmailService emailService) {
         this.clientService = clientService;
+        this.emailService=emailService;
     }
-
+/////////////////get all client////////////////////////////
     @GetMapping
     public ResponseEntity<List<Client>> getAllClients() {
         List<Client> clients = clientService.getAllClients();
@@ -48,14 +51,14 @@ public class ClientController {
         return updatedClient != null ? new ResponseEntity<>(updatedClient, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
+/////////////////////////delete client///////////////////////
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id) {
         clientService.deleteClient(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
+////////////////////////client login/////////////////////////
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
         String email = credentials.get("email");
@@ -77,12 +80,15 @@ public class ClientController {
         }
     }
 
-
+//////////////////inscription particulier///////////////////////////
     @PostMapping("/subscribe/particulier")
     public ResponseEntity<Particulier> subscribeParticulier(@RequestBody Particulier particulier) {
         Particulier subscribedParticulier = clientService.subscribeParticulier(particulier);
         return new ResponseEntity<>(subscribedParticulier, HttpStatus.CREATED);
     }
+
+
+    ///////////////////updaate client password/////////////////////////
     @PutMapping("/addpassword")
     public ResponseEntity<String> updateClientPassword(@RequestParam Long id, @RequestBody Map<String, String> requestBody) {
         String password = requestBody.get("password");
@@ -116,6 +122,11 @@ public class ClientController {
 
         return ResponseEntity.status(HttpStatus.OK).body(htmlResponse);
     }*/
+
+
+
+
+    /////////////////////////activer compte client via email////////////////////////////
     @GetMapping("/activate")
     public ResponseEntity<String> activateClientByEmail(@RequestParam("email") String email) {
         clientService.activateClientByEmail(email);
@@ -188,5 +199,14 @@ public class ClientController {
                 + "</html>";
 
         return ResponseEntity.status(HttpStatus.OK).body(htmlResponse);
+    }
+
+
+///////////////envoyer un email de confirmation///////////////////////
+
+    @PostMapping("/send-confirmation-email")
+    public String sendConfirmationEmail(@RequestParam("email") String recipientEmail) {
+        emailService.sendConfirmationEmail(recipientEmail);
+        return "Confirmation email sent to " + recipientEmail;
     }
 }

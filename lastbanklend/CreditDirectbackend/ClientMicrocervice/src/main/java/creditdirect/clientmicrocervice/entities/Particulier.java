@@ -35,5 +35,9 @@ public class Particulier extends Client {
     @Column(name = "resides_in_algeria")
     private boolean residesInAlgeria;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "commune_id") // Name of the foreign key column in Particulier table
+    private Commune commune; // Represents the Commune associated with this Particulier
+
 
 }

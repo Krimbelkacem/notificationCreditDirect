@@ -22,7 +22,7 @@ public class EmailService {
 
     public void sendConfirmationEmail(String recipientEmail) {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
-        String activationUrl = "http://localhost:8080/clients/activate?email=" + recipientEmail;
+        String activationUrl = "http://localhost:8000/clients/activate?email=" + recipientEmail;
 
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");

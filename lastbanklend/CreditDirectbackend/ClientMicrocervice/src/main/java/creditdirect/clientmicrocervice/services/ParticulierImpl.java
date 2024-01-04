@@ -32,4 +32,7 @@ public class ParticulierImpl implements ParticulierService {
     public void deleteParticulier(Long id) {
 
     }
+
+
+
 }
