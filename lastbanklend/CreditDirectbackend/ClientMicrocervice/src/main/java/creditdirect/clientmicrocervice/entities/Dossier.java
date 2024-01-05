@@ -33,6 +33,8 @@ public class Dossier {
     @Column(name = "type_financement")
     private String typeFinancement;
 
+
+
     @ElementCollection
     @CollectionTable(name = "CreditAttachments", joinColumns = @JoinColumn(name = "Dossier_id"))
     private List<AttachedFile> attachedFiles;

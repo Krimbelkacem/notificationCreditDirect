@@ -55,6 +55,7 @@ public class FileStorageService {
                 AttachedFile attachedFile = new AttachedFile();
                 attachedFile.setFileName(fileName);
                 attachedFile.setFilePath(filePath);
+
                 attachedFiles.add(attachedFile);
             } catch (IOException ex) {
                 // Handle file storage exception

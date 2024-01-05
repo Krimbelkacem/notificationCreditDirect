@@ -30,4 +30,6 @@ public interface DossierService {
     void updateDossierStatusToTraitee(Long dossierId);
 
     Dossier addDossier(Dossier dossier);
+
+    void deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
 }

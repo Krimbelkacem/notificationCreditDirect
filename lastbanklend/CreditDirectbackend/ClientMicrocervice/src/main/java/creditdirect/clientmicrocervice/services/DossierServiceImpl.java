@@ -77,13 +77,17 @@ public class DossierServiceImpl implements DossierService {
                 .orElseThrow(() -> new RuntimeException("Client not found"));
         dossier.setClient(client);
 
-        Long agenceId = getSingleAgenceIdByParticulierId(clientId);
 
-        // Set the retrieved Agence ID to the Dossier if available
-        if (agenceId != null) {
-            Agence agence = agenceRepository.findById(agenceId)
-                    .orElseThrow(() -> new RuntimeException("Agence not found"));
-            dossier.setAgenceId(agenceId);
+        if (client instanceof Particulier) {
+            Long particulierId = ((Particulier) client).getId();
+            Long agenceId = getSingleAgenceIdByParticulierId(particulierId);
+
+            // Set the retrieved Agence ID to the Dossier if available
+            if (agenceId != null) {
+                Agence agence = agenceRepository.findById(agenceId)
+                        .orElseThrow(() -> new RuntimeException("Agence not found"));
+                dossier.setAgenceId(agenceId);
+            }
         }
 
         return dossierRepository.save(dossier);
@@ -157,6 +161,8 @@ public Long getSingleAgenceIdByParticulierId(Long particulierId) {
 
     return null;
 }*/
+
+
 
     @Override
     public Long getSingleAgenceIdByParticulierId(Long particulierId) {
@@ -265,6 +271,18 @@ public Long getSingleAgenceIdByParticulierId(Long particulierId) {
         Optional<Dossier> dossierOptional = dossierRepository.findById(dossierId);
         dossierOptional.ifPresent(dossier -> {
             dossier.setStatus(DossierStatus.TRAITEE);
+            dossierRepository.save(dossier);
+        });
+    }
+
+///////////////////////delete file by file name and id dossier/////////////////
+    @Override
+    public void deleteFileByDossierIdAndFileName(Long dossierId, String fileName) {
+        Optional<Dossier> dossierOptional = dossierRepository.findById(dossierId);
+
+        dossierOptional.ifPresent(dossier -> {
+            List<AttachedFile> attachedFiles = dossier.getAttachedFiles();
+            attachedFiles.removeIf(attachedFile -> attachedFile.getFileName().equals(fileName));
             dossierRepository.save(dossier);
         });
     }
