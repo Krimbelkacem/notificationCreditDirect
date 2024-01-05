@@ -19,6 +19,8 @@ public class Dossier {
     @Column(name = "DossierID")
     private Long id;
 
+    @Column(name = "nom_dossier")
+    private String nomDossier;
 
     @ManyToOne
     @JoinColumn(name = "client_id") // Name of the foreign key column in DemandeCredit table

@@ -55,6 +55,44 @@ public class EmailService {
         // Send the email
         emailSender.send(mimeMessage);
     }
+
+
+
+
+
+
+
+    public void sendPasswordEmail(String recipientEmail, String password) {
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(recipientEmail);
+            helper.setSubject("Your Password");
+
+            String htmlBody = "<html>"
+                    + "<head>"
+                    + "<title>Your Password</title>"
+                    + "<style>"
+                    + "body { font-family: Arial, sans-serif; }"
+                    + "h2 { color: #0056b3; }"
+                    + "p { color: #333; }"
+                    + ".password { font-weight: bold; }"
+                    + "</style>"
+                    + "</head>"
+                    + "<body>"
+                    + "<h2>Your Password</h2>"
+                    + "<p>Your password is: <span class='password'>" + password + "</span></p>"
+                    + "</body></html>";
+
+            helper.setText(htmlBody, true); // Set the email body as HTML
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        // Send the email
+        emailSender.send(mimeMessage);
+    }
 }
 
 
