@@ -2,6 +2,9 @@ package creditdirect.clientmicrocervice.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Embeddable
 public class AttachedFile {
@@ -16,6 +19,11 @@ public class AttachedFile {
 
     @Column(name = "file_type") // Add a column for file type
     private String fileType;
+
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     public AttachedFile() {
         // Default constructor

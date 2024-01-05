@@ -2,6 +2,9 @@ package creditdirect.clientmicrocervice.entities;
 
 import lombok.Data;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -21,5 +24,8 @@ public class Bankier {
 
     @Column(name = "mot_pass")
     private String password;
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
 }

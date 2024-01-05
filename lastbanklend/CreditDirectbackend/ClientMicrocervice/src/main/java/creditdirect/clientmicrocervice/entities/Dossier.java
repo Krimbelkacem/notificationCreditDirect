@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -54,7 +57,8 @@ public class Dossier {
     @Column(name = "agence_id")
     private Long agenceId;
 
-
+    @Column(name = "direction_regionale_id")
+    private Long direction_regionaleId;
 
     @Column(name = "montant_habitation")
     private Double montantHabitation; // Montant de l'habitation
@@ -94,6 +98,13 @@ public class Dossier {
     @Column(name = "montant_autre_financement_en_cours")
     private Double montantAutreFinancementEnCours; // Mentionnez ce montant autre financement en cours
 
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
 

@@ -2,6 +2,9 @@ package creditdirect.clientmicrocervice.entities;
 
 import lombok.Data;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -24,6 +27,10 @@ public class Client {
 
     @Column(name = "activated")
     private boolean activated = false;
+    @Column(name = "created_at", updatable = false)
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
 
 }

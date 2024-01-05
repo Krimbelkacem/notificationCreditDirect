@@ -1,6 +1,9 @@
 package creditdirect.clientmicrocervice.entities;
 import lombok.Data;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -22,4 +25,9 @@ public class Compte {
 
     @Column(name = "agence_id")
     private Long agenceId;
+
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

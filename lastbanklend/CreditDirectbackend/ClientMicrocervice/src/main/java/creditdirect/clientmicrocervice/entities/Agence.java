@@ -2,7 +2,9 @@ package creditdirect.clientmicrocervice.entities;
 
 import lombok.Data;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,5 +32,13 @@ public class Agence {
     )
     private Set<Commune> communes = new HashSet<>();
 
+
+    @ManyToOne
+    @JoinColumn(name = "direction_regionale_id")
+    private DirectionRegionale directionRegionale;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }
 
