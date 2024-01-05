@@ -111,10 +111,10 @@ public Long addDossier(@RequestBody Map<String, Object> requestBody) {
     }
 
 
-
+///////////// dossier en cours for courtiers
     @GetMapping("/courtier/{courtierId}/Encours")
     public List<Dossier> getDossiersencoursForCourtier(@PathVariable Long courtierId) {
-        return dossierService.getTraiteeDossiersByCourtier(courtierId);
+        return dossierService.getDossiersencoursForCourtier(courtierId);
     }
 
 /// dosiieers traitte par le courtier

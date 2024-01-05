@@ -368,7 +368,7 @@ public Long getSingleAgenceIdByParticulierId(Long particulierId) {
 
     @Override
     public List<Dossier> getDossiersencoursForCourtier(Long courtierId) {
-        return dossierRepository.findAllByAgenceIdAndStatus(courtierId, DossierStatus.TRAITEMENT_ENCOURS);
+        return dossierRepository.findAllByAssignedCourtier_IdAndStatus(courtierId, DossierStatus.TRAITEMENT_ENCOURS);
     }
 
 

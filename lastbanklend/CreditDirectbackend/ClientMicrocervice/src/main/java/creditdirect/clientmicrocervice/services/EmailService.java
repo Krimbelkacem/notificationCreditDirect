@@ -21,6 +21,8 @@ public class EmailService {
     }
 
     public void sendConfirmationEmail(String recipientEmail) {
+
+
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         String activationUrl = "http://localhost:8000/clients/activate?email=" + recipientEmail;
 

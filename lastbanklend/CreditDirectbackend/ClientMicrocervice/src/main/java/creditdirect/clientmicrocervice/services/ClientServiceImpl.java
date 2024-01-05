@@ -187,7 +187,7 @@ public class ClientServiceImpl implements ClientService {
         // Save the Particulier first
         Particulier subscribedParticulier = particulierRepository.save(particulier);
 
-      //  emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
+        emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
 
         // Retrieve Commune based on postal code
         String postalCode = particulier.getCodePostal(); // Assuming you have a method to get postal code from Particulier
