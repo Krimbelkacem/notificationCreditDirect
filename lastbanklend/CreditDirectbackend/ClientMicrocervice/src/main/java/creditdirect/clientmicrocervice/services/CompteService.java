@@ -7,4 +7,6 @@ public interface CompteService {
 
 
     String signInByNin(String nin, String password);
+
+    Compte findByNin(String nin);
 }

@@ -42,10 +42,14 @@ public class CompteServiceImpl implements CompteService {
   public String signInByNin(String nin, String password) {
       Compte compte = compteRepository.findByNin(nin);
       if (compte != null && passwordEncoder.matches(password, compte.getPassword())) {
-          // User authenticated, generate JWT token
           String token = jwtUtil.generateToken(compte.getId(), compte.getRole());
-          return token; // Return token upon successful authentication
+          return token;
       }
-      return null; // Return null for failed authentication
+      return null;
   }
+    @Override
+    public Compte findByNin(String nin) {
+        return compteRepository.findByNin(nin);
+    }
+
 }

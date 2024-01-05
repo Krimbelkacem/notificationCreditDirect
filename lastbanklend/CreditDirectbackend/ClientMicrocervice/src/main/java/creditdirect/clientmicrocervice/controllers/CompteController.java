@@ -27,21 +27,24 @@ public class CompteController {
         }
     }
 
-
     @PostMapping("/signin")
-    public ResponseEntity<Map<String, String>> signIn(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<Map<String, Object>> signIn(@RequestBody Map<String, String> credentials) {
         String nin = credentials.get("nin");
         String password = credentials.get("password");
 
         String signedInToken = compteService.signInByNin(nin, password);
-        if (signedInToken != null) {
-            Map<String, String> response = new HashMap<>();
+        Compte createdCompte = compteService.findByNin(nin); // Assuming this method retrieves the account
+
+        if (signedInToken != null && createdCompte != null) {
+            Map<String, Object> response = new HashMap<>();
             response.put("token", signedInToken);
-            return ResponseEntity.ok(response); // Send token in response body as JSON
+            response.put("compte", createdCompte);
+            return ResponseEntity.ok(response); // Send token and account in response body as JSON
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
 
 
 }

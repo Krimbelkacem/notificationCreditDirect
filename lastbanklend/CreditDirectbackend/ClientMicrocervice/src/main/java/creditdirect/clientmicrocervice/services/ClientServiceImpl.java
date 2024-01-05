@@ -91,8 +91,10 @@ public class ClientServiceImpl implements ClientService {
 
         if (client != null && passwordEncoder.matches(password, client.getPassword())) {
             String token = generateToken(client);
+            String clientType = getClientType(client);
 
             response.put("client", client); // Adding client information to the response
+            response.put("role", clientType); // Adding client type to the response
             response.put("token", token);
         } else {
             response.put("error", "Authentication failed");
