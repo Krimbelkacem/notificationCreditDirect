@@ -171,15 +171,17 @@ public class ClientServiceImpl implements ClientService {
         // Save the Particulier first
         Particulier subscribedParticulier = particulierRepository.save(particulier);
 
-        emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
+      //  emailService.sendConfirmationEmail(subscribedParticulier.getEmail());
 
         // Retrieve Commune based on postal code
         String postalCode = particulier.getCodePostal(); // Assuming you have a method to get postal code from Particulier
         Commune commune = communeRepository.findByCodePostal(postalCode);
+           System.out.println("postalCode postalCode: " + postalCode);
 
         if (commune != null) {
             subscribedParticulier.setCommune(commune); // Associate Particulier with Commune
-            return particulierRepository.save(subscribedParticulier); // Save and return the updated Particulier
+            particulierRepository.save(subscribedParticulier);
+            return subscribedParticulier; // Save and return the updated Particulier
         } else {
             // Handle scenario when Commune is not found for the provided postal code
             return null;

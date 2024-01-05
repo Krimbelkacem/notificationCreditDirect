@@ -20,7 +20,7 @@ public class Client {
     @Column(name = "mot_pass")
     private String password;
 
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private String email;
 
 
