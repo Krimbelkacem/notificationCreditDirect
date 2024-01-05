@@ -61,10 +61,63 @@ public class DossierServiceImpl implements DossierService {
     }
 
 
+    @Override
+    @Transactional
+    public Dossier addDossier(Dossier dossier) {
+        Long clientId = dossier.getClient().getId();
+        System.out.println("Client ID: " + clientId);
+
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+        dossier.setClient(client);
+
+        if (client instanceof Particulier) {
+            Particulier particulier = (Particulier) client;
+
+            // Assuming particulierId is retrieved from somewhere, it's not defined in the given code
+            Particulier foundParticulier = particulierRepository.findById(particulier.getId()).orElse(null);
+
+            if (foundParticulier != null) {
+                Commune commune = foundParticulier.getCommune();
+
+                if (commune != null) {
+                    List<Agence> agences = findAgencesByCommuneId(commune.getId());
+
+                    if (agences.size() == 1) {
+                        System.out.println("Cette commune appartient à une seule agence");
+                        Agence singleAgence = agences.get(0);
+                        Long agenceId = singleAgence.getId();
+                        System.out.println("agenceId"+agenceId);
+                        if (agenceId != null) {
+                            dossier.setAgenceId(agenceId);
+                        }
+
+                        return dossierRepository.save(dossier);
+                    } else if (agences.size() > 1) {
+                        System.out.println("Cette commune appartient à plusieurs agences");
+                        Agence firstAgence = agences.get(0);
+                        System.out.println("firstAgence"+firstAgence);
+                        DirectionRegionale directionRegionale = firstAgence.getDirectionRegionale();
+
+                        if (directionRegionale != null) {
+                            Long directionRegionaleId = directionRegionale.getId();
+                            System.out.println("directionRegionaleId"+directionRegionaleId);
+                            dossier.setDirection_regionaleId(directionRegionaleId);
+                        }
+
+                        return dossierRepository.save(dossier);
+                    }
+                }
+            }
+        }
+
+        return dossierRepository.save(dossier);
+    }
 
 
 
 
+/*
     @Override
     @Transactional
     public Dossier addDossier(Dossier dossier) {
@@ -83,12 +136,13 @@ public class DossierServiceImpl implements DossierService {
                 dossier.setAgenceId(agenceId);
             } else {
                 Long directionRegionaleId = findAgenceRegionaleIdByParticulierId(particulier.getId());
+                System.out.println("id direction: " +directionRegionaleId  );
                 dossier.setDirection_regionaleId(directionRegionaleId);
             }
         }
 
         return dossierRepository.save(dossier);
-    }
+    }*/
 
 
 
@@ -234,17 +288,23 @@ public Long getSingleAgenceIdByParticulierId(Long particulierId) {
     @Override
 
     public Long findAgenceRegionaleIdByParticulierId(Long idParticulier) {
-        String jpql = "SELECT dr.id FROM Particulier p " +
+
+        System.out.println("idParticulier ID: " + idParticulier);
+
+        String jpql = "SELECT a.id FROM Particulier p " +
                 "JOIN p.commune c " +
                 "JOIN c.agences a " +
-                "JOIN a.directionRegionale dr " +
-                "WHERE p.id = :idParticulier";
+
+                "WHERE p.id = :idParticulier "
+               ; // Ordonne par l'ID de l'Agence pour obtenir la première
+
 
         Query query = entityManager.createQuery(jpql);
         query.setParameter("idParticulier", idParticulier);
 
         try {
             return (Long) query.getSingleResult();
+
         } catch (Exception e) {
             return null; // or handle the exception as needed
         }
