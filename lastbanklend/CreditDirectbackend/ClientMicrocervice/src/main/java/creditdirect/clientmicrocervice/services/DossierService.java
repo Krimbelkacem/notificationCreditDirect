@@ -29,6 +29,8 @@ public interface DossierService {
     Dossier assignDossierToCourtier(Long dossierId, Long courtierId);
     List<Dossier> getDossiersForCourtier(Long courtierAgenceId);
 
+    List<Dossier> getDossiersencoursForCourtier(Long courtierId);
+
     List<Dossier> getTraiteeDossiersByCourtier(Long courtierId);
 
     void updateDossierStatusToTraitee(Long dossierId);

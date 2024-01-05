@@ -112,6 +112,10 @@ public Long addDossier(@RequestBody Map<String, Object> requestBody) {
 
 
 
+    @GetMapping("/courtier/{courtierId}/Encours")
+    public List<Dossier> getDossiersencoursForCourtier(@PathVariable Long courtierId) {
+        return dossierService.getTraiteeDossiersByCourtier(courtierId);
+    }
 
 /// dosiieers traitte par le courtier
     @GetMapping("/courtier/{courtierId}/traitee")
@@ -121,7 +125,7 @@ public Long addDossier(@RequestBody Map<String, Object> requestBody) {
 
 
 
-
+////////////////
     @PutMapping("/{dossierId}/mark-as-traitee")
     public void markDossierAsTraitee(@PathVariable Long dossierId) {
         dossierService.updateDossierStatusToTraitee(dossierId);
