@@ -4,6 +4,7 @@ import creditdirect.clientmicrocervice.entities.Client;
 import creditdirect.clientmicrocervice.entities.Particulier;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ClientService {
     List<Client> getAllClients();
@@ -17,6 +18,8 @@ public interface ClientService {
 
     String login(String email, String password);
 
+
+    Map<String, Object> loginWithClientInfo(String email, String password);
 
     Particulier subscribeParticulier(Particulier particulier);
 

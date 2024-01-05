@@ -1,6 +1,5 @@
 package creditdirect.clientmicrocervice.services;
 
-import creditdirect.clientmicrocervice.entities.Agence;
 import creditdirect.clientmicrocervice.entities.Client;
 import creditdirect.clientmicrocervice.entities.Commune;
 import creditdirect.clientmicrocervice.entities.Particulier;
@@ -85,7 +84,22 @@ public class ClientServiceImpl implements ClientService {
             return "Authentication failed";
         }
     }
+    @Override
+    public Map<String, Object> loginWithClientInfo(String email, String password) {
+        Client client = clientRepository.findByEmail(email);
+        Map<String, Object> response = new HashMap<>();
 
+        if (client != null && passwordEncoder.matches(password, client.getPassword())) {
+            String token = generateToken(client);
+
+            response.put("client", client); // Adding client information to the response
+            response.put("token", token);
+        } else {
+            response.put("error", "Authentication failed");
+        }
+
+        return response;
+    }
     private String getClientType(Client client) {
         if (client instanceof Particulier) {
             return "Particulier";

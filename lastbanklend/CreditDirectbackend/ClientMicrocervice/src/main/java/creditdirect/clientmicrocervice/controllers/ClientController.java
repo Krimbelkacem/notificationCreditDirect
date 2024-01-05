@@ -59,7 +59,26 @@ public class ClientController {
     }
 
 ////////////////////////client login/////////////////////////
-    @PostMapping("/login")
+@PostMapping("/login")
+public ResponseEntity<?> loginWithClientInfo(@RequestBody Map<String, String> credentials) {
+    String email = credentials.get("email");
+    String password = credentials.get("password");
+
+    if (email == null || password == null) {
+        return new ResponseEntity<>("Email or password missing", HttpStatus.BAD_REQUEST);
+    }
+
+    Map<String, Object> authenticationResult = clientService.loginWithClientInfo(email, password);
+
+    if (authenticationResult.containsKey("error")) {
+        return new ResponseEntity<>(authenticationResult.get("error"), HttpStatus.UNAUTHORIZED);
+    } else {
+        // Return client info and token in the response
+        return ResponseEntity.ok(authenticationResult);
+    }
+}
+    ////////////encien loginnn
+    @PostMapping("/login/encienne")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
         String email = credentials.get("email");
         String password = credentials.get("password");
@@ -79,6 +98,8 @@ public class ClientController {
             return ResponseEntity.ok(response);
         }
     }
+
+
 
 //////////////////inscription particulier///////////////////////////
     @PostMapping("/subscribe/particulier")
