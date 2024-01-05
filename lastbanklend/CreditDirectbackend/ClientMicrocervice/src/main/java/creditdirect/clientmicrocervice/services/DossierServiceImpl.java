@@ -5,7 +5,9 @@ import creditdirect.clientmicrocervice.config.FileStorageProperties;
 import creditdirect.clientmicrocervice.entities.*;
 import creditdirect.clientmicrocervice.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,13 +35,15 @@ public class DossierServiceImpl implements DossierService {
     private final TypeFinancementRepository typeFinancementRepository;
     private final AgenceRepository agenceRepository;
     private final CompteRepository compteRepository;
+
     private final String uploadDir; // Injecting the upload directory
     private final EntityManager entityManager;
     @Autowired
     public DossierServiceImpl(DossierRepository dossierRepository, ClientRepository clientRepository,
                               FileStorageService fileStorageService, TypeCreditRepository typeCreditRepository,
                               TypeFinancementRepository typeFinancementRepository,FileStorageProperties fileStorageProperties,
-                              CompteRepository compteRepository,ParticulierRepository particulierRepository, EntityManager entityManager,AgenceRepository agenceRepository) {
+                              CompteRepository compteRepository,ParticulierRepository particulierRepository, EntityManager entityManager,
+                              AgenceRepository agenceRepository) {
         this.dossierRepository = dossierRepository;
         this.clientRepository = clientRepository;
         this.fileStorageService = fileStorageService;
@@ -49,6 +53,7 @@ public class DossierServiceImpl implements DossierService {
         this.agenceRepository = agenceRepository;
         this.particulierRepository =particulierRepository;
         this.entityManager = entityManager;
+
 
         this.uploadDir = fileStorageProperties.getUploadDir();
         initializeUploadDir();
@@ -60,16 +65,40 @@ public class DossierServiceImpl implements DossierService {
 
 
 
-
-
-
-
-
-
-
-
-
     @Override
+    @Transactional
+    public Dossier addDossier(Dossier dossier) {
+        Long clientId = dossier.getClient().getId();
+        System.out.println("Client ID: " + clientId);
+
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+        dossier.setClient(client);
+
+        if (client instanceof Particulier) {
+            Particulier particulier = (Particulier) client;
+            Long agenceId = getSingleAgenceIdByParticulierId(particulier.getId());
+
+            if (agenceId != null) {
+                dossier.setAgenceId(agenceId);
+            } else {
+                Long directionRegionaleId = findAgenceRegionaleIdByParticulierId(particulier.getId());
+                dossier.setDirection_regionaleId(directionRegionaleId);
+            }
+        }
+
+        return dossierRepository.save(dossier);
+    }
+
+
+
+
+
+
+
+
+
+   /* @Override
     public Dossier addDossier(Dossier dossier) {
         Long clientId = dossier.getClient().getId();
         System.out.println("id cient"+clientId);
@@ -87,12 +116,17 @@ public class DossierServiceImpl implements DossierService {
                 Agence agence = agenceRepository.findById(agenceId)
                         .orElseThrow(() -> new RuntimeException("Agence not found"));
                 dossier.setAgenceId(agenceId);
+            }else {
+
+                Long direction_regionaleId= findAgenceRegionaleIdByParticulierId( particulierId);
+                dossier.setDirection_regionaleId(direction_regionaleId);
+
             }
         }
 
         return dossierRepository.save(dossier);
     }
-
+*/
     @Override
     public Dossier updateFilesForDossier(Long dossierId, MultipartFile[] files) {
         Dossier dossier = dossierRepository.findById(dossierId)
@@ -185,6 +219,7 @@ public Long getSingleAgenceIdByParticulierId(Long particulierId) {
         return null;
 }
 
+///////////////////queries
     @Override
     public List<Agence> findAgencesByCommuneId(Long communeId) {
         String jpql = "SELECT a FROM Agence a JOIN a.communes c WHERE c.id = :communeId";
@@ -196,7 +231,24 @@ public Long getSingleAgenceIdByParticulierId(Long particulierId) {
 
 
 
+    @Override
 
+    public Long findAgenceRegionaleIdByParticulierId(Long idParticulier) {
+        String jpql = "SELECT dr.id FROM Particulier p " +
+                "JOIN p.commune c " +
+                "JOIN c.agences a " +
+                "JOIN a.directionRegionale dr " +
+                "WHERE p.id = :idParticulier";
+
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter("idParticulier", idParticulier);
+
+        try {
+            return (Long) query.getSingleResult();
+        } catch (Exception e) {
+            return null; // or handle the exception as needed
+        }
+    }
 
 
 

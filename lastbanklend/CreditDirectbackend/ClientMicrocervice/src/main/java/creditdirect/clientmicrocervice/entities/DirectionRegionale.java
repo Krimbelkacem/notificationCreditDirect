@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+@Data
 @Entity
-@Table(name = "DirectionRegionale")
+@Table(name = "direction_regionale")
 public class DirectionRegionale {
 
     @Id
@@ -18,10 +17,9 @@ public class DirectionRegionale {
     @Column(name = "nom")
     private String nom;
 
-    // Other relevant fields
 
-    @OneToMany(mappedBy = "directionRegionale")
-    private Set<Agence> agences = new HashSet<>();
 
-    // Getters and setters
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

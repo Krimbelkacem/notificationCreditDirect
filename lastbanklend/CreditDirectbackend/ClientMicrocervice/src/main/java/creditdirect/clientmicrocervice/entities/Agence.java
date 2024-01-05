@@ -33,9 +33,10 @@ public class Agence {
     private Set<Commune> communes = new HashSet<>();
 
 
-    @ManyToOne
-    @JoinColumn(name = "direction_regionale_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "direction_regionale_id") // Name of the foreign key column in the 'agence' table
     private DirectionRegionale directionRegionale;
+
 
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
