@@ -20,7 +20,7 @@ public class EmailService {
         this.emailSender = emailSender;
     }
 
-    public void sendConfirmationEmail(String recipientEmail) {
+    public void sendConfirmationEmail(String recipientEmail, String password) {
 
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
@@ -43,7 +43,7 @@ public class EmailService {
                     + "</head>"
                     + "<body>"
                     + "<h2>Thank you for subscribing!</h2>"
-                    + "<p>Your password is: <strong>YourPasswordHere</strong></p>"
+                    + "<p>Your password is: <strong>" + password + "</strong></p>"
                     + "<p><a href='" + activationUrl + "' class='btn'>activate your compte</a></p>"
                     + "</body></html>";
 
@@ -95,7 +95,55 @@ public class EmailService {
         // Send the email
         emailSender.send(mimeMessage);
     }
+
+
+
+
+
+
+
+    public void sendanotherConfirmation(String recipientEmail) {
+
+
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        String activationUrl = "http://localhost:8000/clients/activate?email=" + recipientEmail;
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(recipientEmail);
+            helper.setSubject("Subscription Confirmation");
+
+            String htmlBody = "<html>"
+                    + "<head>"
+                    + "<title>Subscription Confirmation</title>"
+                    + "<style>"
+                    + "body { font-family: Arial, sans-serif; }"
+                    + "h2 { color: #0056b3; }"
+                    + "p { color: #333; }"
+                    + ".btn { display: inline-block; padding: 10px 20px; background-color: #0056b3; color: #fff; text-decoration: none; }"
+                    + "</style>"
+                    + "</head>"
+                    + "<body>"
+                    + "<h2>Thank you for subscribing!</h2>"
+                    + "<p>Your password is: <strong>YourPasswordHere</strong></p>"
+                    + "<p><a href='" + activationUrl + "' class='btn'>activate your compte</a></p>"
+                    + "</body></html>";
+
+
+
+            helper.setText(htmlBody, true); // Set the email body as HTML
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        // Send the email
+        emailSender.send(mimeMessage);
+    }
+
 }
+
+
+
 
 
 /*

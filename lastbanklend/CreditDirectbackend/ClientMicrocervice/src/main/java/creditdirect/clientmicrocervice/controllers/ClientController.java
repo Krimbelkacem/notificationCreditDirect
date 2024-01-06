@@ -227,7 +227,7 @@ public ResponseEntity<?> loginWithClientInfo(@RequestBody Map<String, String> cr
 
     @PostMapping("/send-confirmation-email")
     public String sendConfirmationEmail(@RequestParam("email") String recipientEmail) {
-        emailService.sendConfirmationEmail(recipientEmail);
+        emailService.sendanotherConfirmation(recipientEmail);
         return "Confirmation email sent to " + recipientEmail;
     }
 }
