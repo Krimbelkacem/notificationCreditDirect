@@ -18,12 +18,16 @@ public class CompteController {
     private CompteService compteService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> signUp(@RequestBody Compte compte) {
-        Compte createdCompte = compteService.signUp(compte);
-        if (createdCompte != null) {
-            return new ResponseEntity<>("Account created successfully", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("Failed to create account", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> signUp(@RequestBody Compte compte) {
+        try {
+            Compte createdCompte = compteService.signUp(compte);
+            if (createdCompte != null) {
+                return new ResponseEntity<>(createdCompte, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>("Failed to create account", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error creating account: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

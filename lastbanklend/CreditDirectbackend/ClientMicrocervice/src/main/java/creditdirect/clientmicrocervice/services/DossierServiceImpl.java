@@ -65,6 +65,8 @@ public class DossierServiceImpl implements DossierService {
     @Transactional
     public Dossier addDossier(Dossier dossier) {
         Long clientId = dossier.getClient().getId();
+
+        System.out.println("ajoute du dossier") ;
         System.out.println("Client ID: " + clientId);
 
         Client client = clientRepository.findById(clientId)
@@ -73,7 +75,7 @@ public class DossierServiceImpl implements DossierService {
 
         if (client instanceof Particulier) {
             Particulier particulier = (Particulier) client;
-
+            System.out.println("particulier ID: " + particulier);
             // Assuming particulierId is retrieved from somewhere, it's not defined in the given code
             Particulier foundParticulier = particulierRepository.findById(particulier.getId()).orElse(null);
 
@@ -82,6 +84,8 @@ public class DossierServiceImpl implements DossierService {
 
                 if (commune != null) {
                     List<Agence> agences = findAgencesByCommuneId(commune.getId());
+                    System.out.println("commune ID: " + commune.getId());
+                    System.out.println("agences ID: " + agences);
 
                     if (agences.size() == 1) {
                         System.out.println("Cette commune appartient à une seule agence");

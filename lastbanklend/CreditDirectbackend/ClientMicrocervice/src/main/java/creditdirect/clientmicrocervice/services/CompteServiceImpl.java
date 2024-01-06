@@ -17,18 +17,26 @@ public class CompteServiceImpl implements CompteService {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Override
     public Compte signUp(Compte compte) {
-        // Check if the NIN already exists
-        Compte existingCompte = compteRepository.findByNin(compte.getNin());
-        if (existingCompte != null) {
-            // Handle duplication error or return null to indicate failure
+        try {
+            // Check if the NIN already exists
+            Compte existingCompte = compteRepository.findByNin(compte.getNin());
+            if (existingCompte != null) {
+                // Handle duplication error or throw an exception
+                throw new IllegalArgumentException("NIN already exists");
+            }
+
+            // Hash the password
+            String hashedPassword = passwordEncoder.encode(compte.getPassword());
+            compte.setPassword(hashedPassword);
+
+            return compteRepository.save(compte);
+        } catch (Exception e) {
+            // Log the error
+            e.printStackTrace();
+            // You might handle the exception more gracefully here,
+            // like logging, custom exceptions, or returning null based on your requirements.
             return null;
         }
-
-        // Hash the password
-        String hashedPassword = passwordEncoder.encode(compte.getPassword());
-        compte.setPassword(hashedPassword);
-
-        return compteRepository.save(compte);
     }
   /*  @Override
     public Compte signInByNin(String nin, String password) {

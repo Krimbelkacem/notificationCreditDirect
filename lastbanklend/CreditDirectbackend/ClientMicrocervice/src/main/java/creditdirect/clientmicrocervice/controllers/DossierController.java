@@ -104,7 +104,7 @@ public Long addDossier(@RequestBody Map<String, Object> requestBody) {
         return ResponseEntity.ok(assignedDossier);
     }
 
-
+/////////////dossier agence non asignd
     @GetMapping("/{courtierAgenceId}/dossiersnotassigned")
     public List<Dossier> getDossiersForCourtier(@PathVariable Long courtierAgenceId) {
         return dossierService.getDossiersForCourtier(courtierAgenceId);
