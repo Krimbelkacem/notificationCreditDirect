@@ -53,12 +53,13 @@ public class Dossier {
     @Column(name = "status")
     private DossierStatus status = DossierStatus.NON_TRAITEE;
 
+    @ManyToOne
+    @JoinColumn(name = "agence_id")
+    private Agence assignedagence;
 
-    @Column(name = "agence_id")
-    private Long agenceId;
-
-    @Column(name = "direction_regionale_id")
-    private Long direction_regionaleId;
+    @ManyToOne
+    @JoinColumn(name = "direction_regionale_id")
+    private DirectionRegionale assigneddirectionregionnale;
 
     @Column(name = "montant_habitation")
     private Double montantHabitation; // Montant de l'habitation

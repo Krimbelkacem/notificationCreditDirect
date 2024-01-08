@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.List;
+
 @Service
 public class CompteServiceImpl implements CompteService {
     @Autowired
@@ -58,6 +60,12 @@ public class CompteServiceImpl implements CompteService {
     @Override
     public Compte findByNin(String nin) {
         return compteRepository.findByNin(nin);
+    }
+
+
+    @Override
+    public List<Compte> getAllComptes() {
+        return compteRepository.findAll();
     }
 
 }

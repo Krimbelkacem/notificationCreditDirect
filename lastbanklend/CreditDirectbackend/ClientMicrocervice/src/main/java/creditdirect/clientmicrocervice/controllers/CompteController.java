@@ -8,14 +8,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/banque/comptes")
 public class CompteController {
 
+
+
+
+
     @Autowired
     private CompteService compteService;
+
+
+    @GetMapping
+    public List<Compte> getAllComptes() {
+        return compteService.getAllComptes();
+    }
+
 
     @PostMapping("/create")
     public ResponseEntity<Object> signUp(@RequestBody Compte compte) {

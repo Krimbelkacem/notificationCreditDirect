@@ -13,7 +13,7 @@ public class AttachedFile {
 
 
 
-    @Column(name = "file_name",unique = true)
+    @Column(name = "file_name")
     private String fileName;
 
     @Column(name = "file_path")

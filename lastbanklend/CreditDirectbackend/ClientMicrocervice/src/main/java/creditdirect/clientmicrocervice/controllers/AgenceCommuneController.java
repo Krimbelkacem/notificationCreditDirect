@@ -28,7 +28,10 @@ public class AgenceCommuneController {
         Agence createdAgence = agenceCommuneService.createAgence(agence);
         return new ResponseEntity<>(createdAgence, HttpStatus.CREATED);
     }
-
+    @GetMapping("/getallagences")
+    public List<Agence> getAllAgences() {
+        return agenceCommuneService.getAllAgences();
+    }
 
     @PutMapping("/{agenceId}/add-commune/{communeId}")
     public ResponseEntity<Void> addCommuneToAgence(@PathVariable Long agenceId, @PathVariable Long communeId) {
@@ -37,10 +40,16 @@ public class AgenceCommuneController {
     }
 
     @GetMapping
-    public List<Commune> getAllCommunes() {
-        return agenceCommuneService.getAllCommunes();
+    public ResponseEntity<?> getAllCommunes() {
+        try {
+            List<Commune> communes = agenceCommuneService.getAllCommunes();
+            return ResponseEntity.ok(communes);
+        } catch (Exception e) {
+            // Log the exception or perform necessary actions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching communes: " + e.getMessage());
+        }
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Commune> getCommuneById(@PathVariable Long id) {
         Commune commune = agenceCommuneService.getCommuneById(id);

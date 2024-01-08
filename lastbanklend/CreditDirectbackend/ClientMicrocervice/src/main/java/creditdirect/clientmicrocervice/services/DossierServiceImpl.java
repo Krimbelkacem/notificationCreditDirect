@@ -93,7 +93,7 @@ public class DossierServiceImpl implements DossierService {
                         Long agenceId = singleAgence.getId();
                         System.out.println("agenceId"+agenceId);
                         if (agenceId != null) {
-                            dossier.setAgenceId(agenceId);
+                            dossier.setAssignedagence(singleAgence);
                         }
 
                         return dossierRepository.save(dossier);
@@ -106,7 +106,7 @@ public class DossierServiceImpl implements DossierService {
                         if (directionRegionale != null) {
                             Long directionRegionaleId = directionRegionale.getId();
                             System.out.println("directionRegionaleId"+directionRegionaleId);
-                            dossier.setDirection_regionaleId(directionRegionaleId);
+                            dossier.setAssigneddirectionregionnale(directionRegionale);
                         }
 
                         return dossierRepository.save(dossier);
@@ -366,7 +366,7 @@ public Long getSingleAgenceIdByParticulierId(Long particulierId) {
     // courtier avoir les dossiers non traiter
     @Override
     public List<Dossier> getDossiersForCourtier(Long courtierId) {
-        return dossierRepository.findAllByAgenceIdAndStatus(courtierId, DossierStatus.NON_TRAITEE);
+        return dossierRepository.findAllByAssignedagenceIdAndStatus(courtierId, DossierStatus.NON_TRAITEE);
     }
 
 

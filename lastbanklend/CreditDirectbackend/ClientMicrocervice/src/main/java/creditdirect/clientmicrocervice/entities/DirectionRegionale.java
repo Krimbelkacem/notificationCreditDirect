@@ -22,4 +22,8 @@ public class DirectionRegionale {
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+
+    @Column(name = "adresse")
+    private String adresse;
 }

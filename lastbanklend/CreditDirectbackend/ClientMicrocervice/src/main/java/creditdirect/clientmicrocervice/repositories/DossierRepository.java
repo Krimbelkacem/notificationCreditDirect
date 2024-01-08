@@ -15,7 +15,9 @@ public interface DossierRepository extends JpaRepository<Dossier, Long> {
     List<Dossier> findByClientId(Long clientId);
 
 
-    List<Dossier> findAllByAgenceIdAndStatus(Long courtierAgenceId, DossierStatus dossierStatus);
+    //List<Dossier> findAllByAgenceIdAndStatus(Long courtierAgenceId, DossierStatus dossierStatus);
 
     List<Dossier> findAllByAssignedCourtier_IdAndStatus(Long courtierId, DossierStatus dossierStatus);
+
+    List<Dossier> findAllByAssignedagenceIdAndStatus(Long courtierId, DossierStatus dossierStatus);
 }

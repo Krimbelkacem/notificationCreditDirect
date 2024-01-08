@@ -2,12 +2,17 @@ package creditdirect.clientmicrocervice.services;
 
 import creditdirect.clientmicrocervice.entities.Agence;
 import creditdirect.clientmicrocervice.entities.Commune;
+import creditdirect.clientmicrocervice.entities.Wilaya;
 import creditdirect.clientmicrocervice.repositories.AgenceRepository;
 import creditdirect.clientmicrocervice.repositories.CommuneRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 public class AgenceCommuneServiceImpl implements AgenceCommuneService {
     private final AgenceRepository agenceRepository;
@@ -24,11 +29,16 @@ public class AgenceCommuneServiceImpl implements AgenceCommuneService {
         return communeRepository.save(commune);
     }
 
-    @Override
-    public List<Commune> getAllCommunes() {
-        return communeRepository.findAll();
-    }
 
+    @Override
+    public List<Commune> getAllCommunes() throws Exception {
+        try {
+            return communeRepository.findAll();
+        } catch (Exception e) {
+            // Log the exception or perform necessary actions
+            throw new Exception("Failed to fetch communes", e);
+        }
+    }
     @Override
     public Commune getCommuneById(Long id) {
         return communeRepository.findById(id).orElse(null);
@@ -69,4 +79,20 @@ public class AgenceCommuneServiceImpl implements AgenceCommuneService {
         }
 
     }
+
+    @Override
+    public List<Agence> getAllAgences() {
+        return agenceRepository.findAll();
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

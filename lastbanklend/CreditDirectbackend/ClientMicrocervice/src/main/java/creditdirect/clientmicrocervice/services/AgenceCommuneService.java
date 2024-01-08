@@ -20,10 +20,14 @@ public interface AgenceCommuneService {
 
 
 
-    List<Commune> getAllCommunes();
+    List<Commune> getAllCommunes() throws Exception;
     Commune getCommuneById(Long id);
     Commune createCommune(Commune commune);
     Commune updateCommune(Long id, Commune updatedCommune);
     void deleteCommune(Long id);
-    // Other methods as needed
+
+    List<Agence> getAllAgences();
+
+
+
 }

@@ -25,8 +25,15 @@ public class Commune {
 
     @Column(name = "code_postal", unique = true)
     private String codePostal;
+    @Enumerated(EnumType.STRING)
 
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne
+    @JoinColumn(name = "wilaya_id") // Assuming column name for the relationship
+    private Wilaya wilaya;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany
     private Set<Agence> agences = new HashSet<>();
 
