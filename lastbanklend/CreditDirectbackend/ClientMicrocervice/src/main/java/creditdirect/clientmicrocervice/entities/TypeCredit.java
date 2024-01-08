@@ -15,8 +15,9 @@ public class TypeCredit {
     @Column(name = "nom_credit")
     private String nomCredit;
 
-    @Column(name = "id_financement")
-    private Long idFinancement;
+    @ManyToOne
+    @JoinColumn(name = "id_financement")
+    private TypeFinancement typeFinancement;
 
 
     @Column(name = "prix", nullable = true)

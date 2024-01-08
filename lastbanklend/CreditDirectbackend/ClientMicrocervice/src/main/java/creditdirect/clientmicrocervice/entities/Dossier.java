@@ -30,12 +30,13 @@ public class Dossier {
     private Client client; // Represents a single Client for each DemandeCredit
 
 
-    @Column(name = "type_credit")
-    private String typeCredit; // Change the type from TypeCredit to String
+    @ManyToOne
+    @JoinColumn(name= "type_credit")
+    private TypeCredit typeCredit; // Change the type from TypeCredit to String
 
-    @Column(name = "type_financement")
+    /*@Column(name = "type_financement")
     private String typeFinancement;
-
+*/
 
 
     @ElementCollection

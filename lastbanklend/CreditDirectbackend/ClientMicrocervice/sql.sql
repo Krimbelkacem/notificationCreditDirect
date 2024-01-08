@@ -58,3 +58,12 @@ VALUES ('183', 'AGENCE DRAA EL MIZAN', '16 Logemlent LSP, Draa El Mizan, Tizi Ou
 
 
 
+-- Assuming agency 1 corresponds to communes 1, 2, 3, and agency 2 corresponds to communes 4, 5, 6
+INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (1, 14);
+INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (2, 12);
+INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (3, 4);
+INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (4, 1);
+INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (5, 5);
+INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (6, 1);
+INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (10, 2);
+INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (10, 3);
