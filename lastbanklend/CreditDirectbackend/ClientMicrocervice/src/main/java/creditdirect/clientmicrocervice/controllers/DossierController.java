@@ -130,4 +130,28 @@ public Long addDossier(@RequestBody Map<String, Object> requestBody) {
     public void markDossierAsTraitee(@PathVariable Long dossierId) {
         dossierService.updateDossierStatusToTraitee(dossierId);
     }
+
+
+
+
+
+
+
+
+    //////////////////////delete file
+
+
+    @DeleteMapping("/{dossierId}/files/{fileName}")
+    public ResponseEntity<String> deleteFileFromDossier(
+            @PathVariable Long dossierId,
+            @PathVariable String fileName) {
+
+        boolean isDeleted = dossierService.deleteFileByDossierIdAndFileName(dossierId, fileName);
+
+        if (isDeleted) {
+            return ResponseEntity.ok("File deleted successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found or dossier not found.");
+        }
+    }
 }

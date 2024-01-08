@@ -396,15 +396,37 @@ public Long getSingleAgenceIdByParticulierId(Long particulierId) {
     }
 
 ///////////////////////delete file by file name and id dossier/////////////////
-    @Override
-    public void deleteFileByDossierIdAndFileName(Long dossierId, String fileName) {
-        Optional<Dossier> dossierOptional = dossierRepository.findById(dossierId);
+public boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName) {
+    Optional<Dossier> optionalDossier = dossierRepository.findById(dossierId);
 
-        dossierOptional.ifPresent(dossier -> {
-            List<AttachedFile> attachedFiles = dossier.getAttachedFiles();
-            attachedFiles.removeIf(attachedFile -> attachedFile.getFileName().equals(fileName));
+    if (optionalDossier.isPresent()) {
+        Dossier dossier = optionalDossier.get();
+        List<AttachedFile> attachedFiles = dossier.getAttachedFiles();
+        AttachedFile fileToDelete = null;
+
+        for (AttachedFile file : attachedFiles) {
+            if (file.getFileName().equals(fileName)) {
+                fileToDelete = file;
+                break;
+            }
+        }
+
+        if (fileToDelete != null) {
+            attachedFiles.remove(fileToDelete);
             dossierRepository.save(dossier);
-        });
+            // Optionally, perform other operations like deleting the file from storage
+            return true; // File deleted successfully
+        } else {
+            // Handle case: File not found in the dossier
+            return false; // File not found in dossier's attached files
+        }
+    } else {
+        // Handle case: Dossier not found
+        return false; // Dossier not found with the given ID
     }
+}
+
+
+    /////////////////////////////////
 
 }

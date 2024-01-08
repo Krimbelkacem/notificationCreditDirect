@@ -37,5 +37,6 @@ public interface DossierService {
 
     Dossier addDossier(Dossier dossier);
 
-    void deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
+    //void deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
+    boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
 }
