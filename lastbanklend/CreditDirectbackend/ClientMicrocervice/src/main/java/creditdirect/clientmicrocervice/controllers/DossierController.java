@@ -64,39 +64,7 @@ public class DossierController {
     }
 
 
-   /*@PostMapping("/add")
-    public Long addDossier(
-            @RequestParam("client_id") Long clientId,
-            @RequestParam("type_credit_id") Long typeCreditId,
-            @RequestParam("type_financement_id") Long typeFinancementId,
-            @RequestParam("attachedFiles") MultipartFile[] files,
-            @RequestParam("simulationInfo") String simulationInfo
-    ) {
-        // Create dossier and save locally
-        Long dossierId = dossierService.addDossier(clientId, typeCreditId, typeFinancementId, files, simulationInfo);
 
-        // Send dossier ID to Kafka topic
-      //  kafkaProducer.sendDossierToKafka("dossier-topic", String.valueOf(dossierId));
-
-        return dossierId;
-    }*/
-
-
-
-/*@PostMapping("/add")
-public Long addDossier(@RequestBody Map<String, Object> requestBody) {
-    Long clientId = Long.parseLong(requestBody.get("client_id").toString());
-    Long typeCreditId = Long.parseLong(requestBody.get("type_credit_id").toString());
-    Long typeFinancementId = Long.parseLong(requestBody.get("type_financement_id").toString());
-    MultipartFile[] files = (MultipartFile[]) requestBody.get("attachedFiles");
-    String simulationInfo = (String) requestBody.get("simulationInfo");
-
-    // Create dossier and save locally
-    Long dossierId = dossierService.addDossier(clientId, typeCreditId, typeFinancementId, files, simulationInfo);
-
-    return dossierId;
-}
-*/
 //////////////////////////////// asign dossiers to courtier///////////////////
     @PostMapping("/assign-dossier/{dossierId}/to-courtier/{courtierId}")
     public ResponseEntity<Dossier> assignDossierToCourtier(@PathVariable Long dossierId, @PathVariable Long courtierId) {
@@ -131,7 +99,13 @@ public Long addDossier(@RequestBody Map<String, Object> requestBody) {
         dossierService.updateDossierStatusToTraitee(dossierId);
     }
 
+/////////once the client validate dossiers asign it to agence or diretion re
 
+    @PostMapping("/assign-agency/{dossierId}")
+    public ResponseEntity<Dossier> assignAgencyToDossier(@PathVariable Long dossierId) {
+        Dossier updatedDossier = dossierService.affectiondossieragence(dossierId);
+        return ResponseEntity.ok(updatedDossier);
+    }
 
 
 

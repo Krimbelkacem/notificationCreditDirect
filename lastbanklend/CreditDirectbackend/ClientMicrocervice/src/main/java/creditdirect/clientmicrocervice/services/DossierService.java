@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface DossierService {
+
+    Dossier affectiondossieragence(Long dossierId);
     Dossier updateFilesForDossier(Long dossierId, MultipartFile[] files);
 
     //////////////

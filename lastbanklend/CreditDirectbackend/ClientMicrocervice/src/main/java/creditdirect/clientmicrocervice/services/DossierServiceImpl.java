@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +74,62 @@ public class DossierServiceImpl implements DossierService {
                 .orElseThrow(() -> new RuntimeException("Client not found"));
         dossier.setClient(client);
 
-        if (client instanceof Particulier) {
+     /*   if (client instanceof Particulier) {
+            Particulier particulier = (Particulier) client;
+            System.out.println("particulier ID: " + particulier);
+            // Assuming particulierId is retrieved from somewhere, it's not defined in the given code
+            Particulier foundParticulier = particulierRepository.findById(particulier.getId()).orElse(null);
+
+            if (foundParticulier != null) {
+                Commune commune = foundParticulier.getCommune();
+
+                if (commune != null) {
+                    List<Agence> agences = findAgencesByCommuneId(commune.getId());
+                    System.out.println("commune ID: " + commune.getId());
+                    System.out.println("agences ID: " + agences);
+
+                    if (agences.size() == 1) {
+                        System.out.println("Cette commune appartient à une seule agence");
+                        Agence singleAgence = agences.get(0);
+                        Long agenceId = singleAgence.getId();
+                        System.out.println("agenceId"+agenceId);
+                        if (agenceId != null) {
+                            dossier.setAssignedagence(singleAgence);
+                        }
+
+                        return dossierRepository.save(dossier);
+                    } else if (agences.size() > 1) {
+                        System.out.println("Cette commune appartient à plusieurs agences");
+                        Agence firstAgence = agences.get(0);
+                        System.out.println("firstAgence"+firstAgence);
+                        DirectionRegionale directionRegionale = firstAgence.getDirectionRegionale();
+
+                        if (directionRegionale != null) {
+                            Long directionRegionaleId = directionRegionale.getId();
+                            System.out.println("directionRegionaleId"+directionRegionaleId);
+                            dossier.setAssigneddirectionregionnale(directionRegionale);
+                        }
+
+                        return dossierRepository.save(dossier);
+                    }
+                }
+            }
+        }*/
+
+        return dossierRepository.save(dossier);
+    }
+    @Override
+    public Dossier affectiondossieragence(Long dossierId) {
+        Optional<Dossier> optionalDossier = dossierRepository.findById(dossierId);
+        Dossier dossier = optionalDossier.orElseThrow(() -> new RuntimeException("Dossier not found"));
+
+        Long clientId = dossier.getClient().getId();
+
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+        dossier.setClient(client);
+
+       if (client instanceof Particulier) {
             Particulier particulier = (Particulier) client;
             System.out.println("particulier ID: " + particulier);
             // Assuming particulierId is retrieved from somewhere, it's not defined in the given code
@@ -120,72 +176,7 @@ public class DossierServiceImpl implements DossierService {
 
 
 
-
-/*
-    @Override
-    @Transactional
-    public Dossier addDossier(Dossier dossier) {
-        Long clientId = dossier.getClient().getId();
-        System.out.println("Client ID: " + clientId);
-
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
-        dossier.setClient(client);
-
-        if (client instanceof Particulier) {
-            Particulier particulier = (Particulier) client;
-            Long agenceId = getSingleAgenceIdByParticulierId(particulier.getId());
-
-            if (agenceId != null) {
-                dossier.setAgenceId(agenceId);
-            } else {
-                Long directionRegionaleId = findAgenceRegionaleIdByParticulierId(particulier.getId());
-                System.out.println("id direction: " +directionRegionaleId  );
-                dossier.setDirection_regionaleId(directionRegionaleId);
-            }
-        }
-
-        return dossierRepository.save(dossier);
-    }*/
-
-
-
-
-
-
-
-
-
    /* @Override
-    public Dossier addDossier(Dossier dossier) {
-        Long clientId = dossier.getClient().getId();
-        System.out.println("id cient"+clientId);
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
-        dossier.setClient(client);
-
-
-        if (client instanceof Particulier) {
-            Long particulierId = ((Particulier) client).getId();
-            Long agenceId = getSingleAgenceIdByParticulierId(particulierId);
-
-            // Set the retrieved Agence ID to the Dossier if available
-            if (agenceId != null) {
-                Agence agence = agenceRepository.findById(agenceId)
-                        .orElseThrow(() -> new RuntimeException("Agence not found"));
-                dossier.setAgenceId(agenceId);
-            }else {
-
-                Long direction_regionaleId= findAgenceRegionaleIdByParticulierId( particulierId);
-                dossier.setDirection_regionaleId(direction_regionaleId);
-
-            }
-        }
-
-        return dossierRepository.save(dossier);
-    }
-*/
-    @Override
     public Dossier updateFilesForDossier(Long dossierId, MultipartFile[] files) {
         Dossier dossier = dossierRepository.findById(dossierId)
                 .orElseThrow(() -> new RuntimeException("Dossier not found with id: " + dossierId));
@@ -195,66 +186,29 @@ public class DossierServiceImpl implements DossierService {
 
         return dossierRepository.save(dossier);
     }
-    /*
+*/
+   // Service layer
    @Override
-    public Long addDossier(Long clientId, Long typeCreditId, Long typeFinancementId, MultipartFile[] files, String simulationInfo) {
-        Dossier dossier = new Dossier();
+   public Dossier updateFilesForDossier(Long dossierId, MultipartFile[] files) {
+       Dossier dossier = dossierRepository.findById(dossierId)
+               .orElseThrow(() -> new RuntimeException("Dossier not found with id: " + dossierId));
 
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
-        dossier.setClient(client);
+       List<AttachedFile> attachedFiles = dossier.getAttachedFiles(); // Get existing attached files
 
+       // Store the new files and retrieve AttachedFile objects
+       List<AttachedFile> newAttachedFiles = fileStorageService.storeFilesForDossier(files, dossierId);
 
-        // Retrieve the single Agence ID associated with the Particulier's Commune
-       Long agenceId = getSingleAgenceIdByParticulierId(clientId);
+       // Add the new AttachedFile objects to the existing list
+       if (attachedFiles == null) {
+           attachedFiles = new ArrayList<>();
+       }
+       attachedFiles.addAll(newAttachedFiles);
 
-        // Set the retrieved Agence ID to the Dossier if available
-        if (agenceId != null) {
-            Agence agence = agenceRepository.findById(agenceId)
-                    .orElseThrow(() -> new RuntimeException("Agence not found"));
-            dossier.setAgenceId(agenceId);
-        }
+       // Update the attached files list in the Dossier entity
+       dossier.setAttachedFiles(attachedFiles);
 
-
-
-        Dossier savedDossier = dossierRepository.save(dossier);
-
-        // Store uploaded files for the specific Dossier
-        //List<AttachedFile> attachedFiles = fileStorageService.storeFilesForDossier(files, savedDossier.getId());
-      ///  savedDossier.setAttachedFiles(attachedFiles);
-
-        // Update the saved Dossier with attached files
-        savedDossier = dossierRepository.save(savedDossier);
-
-        return savedDossier.getId();
-    }*/
-
-//////////////
-//////////////////////////////////////asign dossier to agence/////////////////////////////////
-/*@Override
-public Long getSingleAgenceIdByParticulierId(Long particulierId) {
-    Particulier particulier = particulierRepository.findById(particulierId).orElse(null);
-    System.out.println("id client"+particulierId);
-    if (particulier != null) {
-        Commune commune = particulier.getCommune();
-        System.out.println("comune"+commune);
-        if (commune != null) {
-            Set<Agence> agences = commune.getAgences();
-
-            System.out.println("agence"+agences);
-
-            if (agences.size() == 1) {
-                Agence singleAgence = agences.iterator().next();
-                System.out.println("is single   idagence"+singleAgence.getId());
-                return singleAgence.getId();
-            }
-        }
-    }
-
-    return null;
-}*/
-
-
+       return dossierRepository.save(dossier);
+   }
 
     @Override
     public Long getSingleAgenceIdByParticulierId(Long particulierId) {
