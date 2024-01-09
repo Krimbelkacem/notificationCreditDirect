@@ -1,4 +1,37 @@
 
+
+INSERT INTO typefinancement (nom_financement) VALUES
+                                                  ('Credit a la consomation'),
+                                                  ('Credit immobilier'),
+                                                  ('Prêt sur gage'),
+                                                  ('Ijara Tamlikia'),
+                                                  ('Morabaha véhicule'),
+                                                  ('Morabaha moto'),
+                                                  ('Morabaha Istihlakiya');
+
+INSERT INTO typecredit (nom_credit, id_financement) VALUES
+                                                        ('Produit électronique et électroménager', 1),
+                                                        ('Meubles et accessoires de maison', 1),
+                                                        ('Véhicule à usage touristique', 1);
+
+
+INSERT INTO typecredit (nom_credit, id_financement) VALUES
+                                                        ('Achat d''un logement promotionnel achevé ou vendu sur plans', 2),
+                                                        ('Construction d''un logement rural', 2),
+                                                        ('Achat d''un logement LPP (Bonifié)', 2),
+                                                        ('Achat d''un logement auprès d''un particulier', 2),
+                                                        ('Achat d''un logement auprès d''un promoteur', 2),
+                                                        ('Achat d''un logement formule "Vente Sur Plan"', 2),
+                                                        ('Acquisition d''un local commercial en "VSP"', 2),
+                                                        ('Coopérative immobilière', 2),
+                                                        ('Aménagement', 2),
+                                                        ('Construction d''une habitation individuelle', 2),
+                                                        ('Construction zone rurale', 2),
+                                                        ('Extension d''une habitation individuelle', 2);
+
+
+
+
 -- Inserting the first three wilayas into the Wilaya table
 INSERT INTO Wilaya (wilaya_name) VALUES ('Tizi Ouzou');
 INSERT INTO Wilaya (wilaya_name) VALUES ('Alger');
