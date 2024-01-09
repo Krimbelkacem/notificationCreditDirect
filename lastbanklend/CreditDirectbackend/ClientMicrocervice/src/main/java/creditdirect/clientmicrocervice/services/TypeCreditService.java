@@ -13,4 +13,6 @@ public interface TypeCreditService {
     void deleteTypeCredit(Long id);
 
     TypeCredit saveTypeCredit(TypeCredit typeCredit, MultipartFile imageFile);
+
+    List<TypeCredit> getTypeCreditsByTypeFinancementId(Long typeFinancementId);
 }

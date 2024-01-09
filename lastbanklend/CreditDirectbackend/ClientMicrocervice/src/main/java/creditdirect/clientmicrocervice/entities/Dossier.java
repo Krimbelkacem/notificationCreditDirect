@@ -22,6 +22,7 @@ public class Dossier {
     @Column(name = "DossierID")
     private Long id;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @Column(name = "nom_dossier")
     private String nomDossier;
 
@@ -29,7 +30,7 @@ public class Dossier {
     @JoinColumn(name = "client_id") // Name of the foreign key column in DemandeCredit table
     private Client client; // Represents a single Client for each DemandeCredit
 
-
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name= "type_credit")
     private TypeCredit typeCredit; // Change the type from TypeCredit to String

@@ -10,4 +10,6 @@ public interface TypeFinancementService {
     TypeFinancement createTypeFinancement(TypeFinancement typeFinancement);
     TypeFinancement updateTypeFinancement(Long id, TypeFinancement typeFinancement);
     void deleteTypeFinancement(Long id);
+
+
 }

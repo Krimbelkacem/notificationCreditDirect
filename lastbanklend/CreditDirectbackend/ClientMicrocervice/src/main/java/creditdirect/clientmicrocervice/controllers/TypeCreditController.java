@@ -1,7 +1,9 @@
 package creditdirect.clientmicrocervice.controllers;
 
 import creditdirect.clientmicrocervice.entities.TypeCredit;
+import creditdirect.clientmicrocervice.entities.TypeFinancement;
 import creditdirect.clientmicrocervice.services.TypeCreditService;
+import creditdirect.clientmicrocervice.services.TypeFinancementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,12 @@ public class TypeCreditController {
 
     private final TypeCreditService typeCreditService;
 
+    private final TypeFinancementService typeFinancementService;
+
     @Autowired
-    public TypeCreditController(TypeCreditService typeCreditService) {
+    public TypeCreditController(TypeCreditService typeCreditService, TypeFinancementService typeFinancementService) {
         this.typeCreditService = typeCreditService;
+        this.typeFinancementService = typeFinancementService;
     }
 
     @GetMapping
@@ -56,13 +61,21 @@ public class TypeCreditController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<TypeCredit> createTypeCredit(@RequestParam("nomCredit") String nomCredit,
-                                                       @RequestParam("idFinancement") Long idFinancement,
-                                                       @RequestParam(value = "prix", required = false) Double prix,
-                                                       @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+    public ResponseEntity<TypeCredit> createTypeCredit(
+            @RequestParam("nomCredit") String nomCredit,
+            @RequestParam("typeFinancementId") Long typeFinancementId,
+            @RequestParam(value = "prix", required = false) Double prix,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile
+    ) {
+        // Fetch TypeFinancement by ID
+        TypeFinancement typefinancement = typeFinancementService.getTypeFinancementById(typeFinancementId);
+        if (typefinancement == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Or handle the scenario appropriately
+        }
+
         TypeCredit typeCredit = new TypeCredit();
         typeCredit.setNomCredit(nomCredit);
-        typeCredit.setIdFinancement(idFinancement);
+        typeCredit.setTypeFinancement(typefinancement);
         typeCredit.setPrix(prix);
 
         TypeCredit savedTypeCredit = typeCreditService.saveTypeCredit(typeCredit, imageFile);
@@ -71,5 +84,11 @@ public class TypeCreditController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+
+    @GetMapping("/typecredits/{typeFinancementId}")
+    public List<TypeCredit> getTypeCreditsByTypeFinancementId(@PathVariable Long typeFinancementId) {
+        return typeCreditService.getTypeCreditsByTypeFinancementId(typeFinancementId);
     }
 }
