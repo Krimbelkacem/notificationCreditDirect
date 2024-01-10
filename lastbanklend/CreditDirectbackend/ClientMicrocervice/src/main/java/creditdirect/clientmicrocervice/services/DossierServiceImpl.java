@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,12 +40,15 @@ public class DossierServiceImpl implements DossierService {
 
     private final String uploadDir; // Injecting the upload directory
     private final EntityManager entityManager;
+
+    private final AgenceCommuneService agenceService;
+
     @Autowired
     public DossierServiceImpl(DossierRepository dossierRepository, ClientRepository clientRepository,
                               FileStorageService fileStorageService, TypeCreditRepository typeCreditRepository,
                               TypeFinancementRepository typeFinancementRepository,FileStorageProperties fileStorageProperties,
                               CompteRepository compteRepository,ParticulierRepository particulierRepository, EntityManager entityManager,
-                              AgenceRepository agenceRepository) {
+                              AgenceRepository agenceRepository, AgenceCommuneService agenceService) {
         this.dossierRepository = dossierRepository;
         this.clientRepository = clientRepository;
         this.fileStorageService = fileStorageService;
@@ -54,6 +58,7 @@ public class DossierServiceImpl implements DossierService {
         this.agenceRepository = agenceRepository;
         this.particulierRepository =particulierRepository;
         this.entityManager = entityManager;
+        this.agenceService = agenceService;
 
 
         this.uploadDir = fileStorageProperties.getUploadDir();
@@ -389,5 +394,21 @@ public boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName)
 
 
     /////////////////////////////////
+
+
+
+
+
+    @Override
+    public List<Dossier> getAllDossiersByAgence(Long assignedAgenceId) {
+        Agence assignedAgence = agenceService.getAgenceById(assignedAgenceId); // Fetch Agence by ID
+
+        if (assignedAgence == null) {
+            // Handle the case where the Agence with the given ID is not found
+            return Collections.emptyList(); // Or throw an exception as needed
+        }
+
+        return dossierRepository.findAllByAssignedagence(assignedAgence);
+    }
 
 }

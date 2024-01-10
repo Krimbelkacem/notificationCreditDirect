@@ -1,6 +1,7 @@
 package creditdirect.clientmicrocervice.repositories;
 
 
+import creditdirect.clientmicrocervice.entities.Agence;
 import creditdirect.clientmicrocervice.entities.Dossier;
 import creditdirect.clientmicrocervice.entities.DossierStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +24,7 @@ public interface DossierRepository extends JpaRepository<Dossier, Long> {
     List<Dossier> findAllByAssignedCourtier_IdAndStatus(Long courtierId, DossierStatus dossierStatus);
 
     List<Dossier> findAllByAssignedagenceIdAndStatus(Long courtierId, DossierStatus dossierStatus);
+
+
+    List<Dossier> findAllByAssignedagence(Agence assignedAgence);
 }

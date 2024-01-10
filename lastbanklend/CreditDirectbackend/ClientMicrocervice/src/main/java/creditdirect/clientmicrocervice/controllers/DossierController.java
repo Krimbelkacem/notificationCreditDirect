@@ -2,6 +2,7 @@ package creditdirect.clientmicrocervice.controllers;
 
 
 
+import creditdirect.clientmicrocervice.entities.Agence;
 import creditdirect.clientmicrocervice.entities.Dossier;
 import creditdirect.clientmicrocervice.kafka.KafkaProducer;
 import creditdirect.clientmicrocervice.services.DossierService;
@@ -138,5 +139,21 @@ public class DossierController {
         dossierService.updateDossiersStatusToTraitee(dossierIds);
         return new ResponseEntity<>("Dossier statuses updated to TRAITEE", HttpStatus.OK);
     }
+
+    ///////////////
+
+
+
+    @GetMapping("/agence/{agenceId}")
+    public ResponseEntity<List<Dossier>> getDossiersByAgence(@PathVariable Long agenceId) {
+        List<Dossier> dossiers = dossierService.getAllDossiersByAgence(agenceId);
+
+        if (dossiers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(dossiers);
+    }
+
 
 }

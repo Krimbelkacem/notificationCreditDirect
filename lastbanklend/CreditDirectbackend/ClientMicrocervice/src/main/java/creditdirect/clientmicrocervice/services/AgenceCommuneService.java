@@ -29,5 +29,5 @@ public interface AgenceCommuneService {
     List<Agence> getAllAgences();
 
 
-
+    Agence getAgenceById(Long assignedAgenceId);
 }

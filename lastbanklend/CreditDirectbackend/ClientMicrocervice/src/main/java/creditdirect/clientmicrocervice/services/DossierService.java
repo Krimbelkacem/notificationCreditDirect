@@ -43,4 +43,7 @@ public interface DossierService {
 
     //void deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
     boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
+
+
+    List<Dossier> getAllDossiersByAgence(Long assignedAgence);
 }

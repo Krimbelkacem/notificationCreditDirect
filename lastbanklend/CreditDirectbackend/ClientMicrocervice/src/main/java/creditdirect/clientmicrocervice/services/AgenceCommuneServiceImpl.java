@@ -85,14 +85,10 @@ public class AgenceCommuneServiceImpl implements AgenceCommuneService {
         return agenceRepository.findAll();
     }
 
-
-
-
-
-
-
-
-
+    @Override
+    public Agence getAgenceById(Long assignedAgenceId) {
+        return agenceRepository.findById(assignedAgenceId).orElse(null);
+    }
 
 
 }
