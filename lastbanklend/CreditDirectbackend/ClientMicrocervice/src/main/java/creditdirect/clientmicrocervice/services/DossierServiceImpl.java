@@ -410,5 +410,11 @@ public boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName)
 
         return dossierRepository.findAllByAssignedagence(assignedAgence);
     }
+    private static final String BASE_UPLOAD_DIR = "C:/Users/user/lastbanklend/CreditDirectbackend/ClientMicrocervice/src/main/resources/uploaded-files/";
 
+    @Override
+    public byte[] downloadFileByDossierIdAndFileName(Long dossierId, String fileName) throws IOException {
+        Path filePath = Paths.get(BASE_UPLOAD_DIR, String.valueOf(dossierId), fileName);
+        return Files.readAllBytes(filePath);
+    }
 }

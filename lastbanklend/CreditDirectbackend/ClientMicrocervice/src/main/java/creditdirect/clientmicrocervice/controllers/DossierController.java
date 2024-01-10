@@ -2,23 +2,37 @@ package creditdirect.clientmicrocervice.controllers;
 
 
 
-import creditdirect.clientmicrocervice.entities.Agence;
+import creditdirect.clientmicrocervice.config.FileStorageProperties;
 import creditdirect.clientmicrocervice.entities.Dossier;
 import creditdirect.clientmicrocervice.kafka.KafkaProducer;
 import creditdirect.clientmicrocervice.services.DossierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.List;
-import java.util.Map;
+
+
 
 @RestController
 @RequestMapping("/dossiers")
 public class DossierController {
+
     private final KafkaProducer kafkaProducer;
     private final DossierService dossierService;
 
@@ -155,5 +169,38 @@ public class DossierController {
         return ResponseEntity.ok(dossiers);
     }
 
+    @Autowired
+    private FileStorageProperties fileStorageProperties;
+
+    @GetMapping("/downloadFile/{dossierId}/{fileName}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Long dossierId, @PathVariable String fileName) {
+        try {
+            String uploadDir = fileStorageProperties.getUploadDir();
+            System.out.println("Base Upload Directory: " + uploadDir);
+
+            Path filePath = Paths.get(uploadDir, String.valueOf(dossierId), fileName);
+            System.out.println("File Path: " + filePath);
+
+            if (!Files.exists(filePath) || !Files.isReadable(filePath)) {
+                System.out.println("File does not exist or is not readable");
+                return ResponseEntity.notFound().build();
+            }
+
+            byte[] fileContent = Files.readAllBytes(filePath);
+            ByteArrayResource resource = new ByteArrayResource(fileContent);
+
+            System.out.println("File downloaded successfully: " + fileName);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentLength(fileContent.length)
+                    .body(resource);
+        } catch (IOException e) {
+            // Handle file download failure
+            System.out.println("File download failed");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 }
