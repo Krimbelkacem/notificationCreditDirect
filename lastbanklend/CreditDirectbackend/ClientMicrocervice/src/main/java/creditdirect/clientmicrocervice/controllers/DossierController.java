@@ -128,4 +128,15 @@ public class DossierController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found or dossier not found.");
         }
     }
+
+
+
+    //////////////
+
+    @PostMapping("/sendmultipletoDirectreur")
+    public ResponseEntity<String> updateDossiersStatusToTraitee(@RequestBody List<Long> dossierIds) {
+        dossierService.updateDossiersStatusToTraitee(dossierIds);
+        return new ResponseEntity<>("Dossier statuses updated to TRAITEE", HttpStatus.OK);
+    }
+
 }

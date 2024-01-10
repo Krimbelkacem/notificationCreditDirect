@@ -348,8 +348,15 @@ public class DossierServiceImpl implements DossierService {
             dossierRepository.save(dossier);
         });
     }
+    @Override
+    public void updateDossiersStatusToTraitee(List<Long> dossierIds) {
+        List<Dossier> dossiersToUpdate = dossierRepository.findAllById(dossierIds);
+        dossiersToUpdate.forEach(dossier -> dossier.setStatus(DossierStatus.TRAITEE));
+        dossierRepository.saveAll(dossiersToUpdate);
+    }
 
-///////////////////////delete file by file name and id dossier/////////////////
+
+    ///////////////////////delete file by file name and id dossier/////////////////
 public boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName) {
     Optional<Dossier> optionalDossier = dossierRepository.findById(dossierId);
 

@@ -39,6 +39,8 @@ public interface DossierService {
 
     Dossier addDossier(Dossier dossier);
 
+    void updateDossiersStatusToTraitee(List<Long> dossierIds);
+
     //void deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
     boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
 }
