@@ -233,8 +233,15 @@ public class DossierServiceImpl implements DossierService {
        // Update the attached files list in the Dossier entity
        dossier.setAttachedFiles(attachedFiles);
 
-       // Add ".pdf" to the end of each file path
+       // Add ".pdf" to the end of each file name and file path
        for (AttachedFile attachedFile : attachedFiles) {
+           // File Name
+           String originalFileName = attachedFile.getFileName();
+           if (!originalFileName.endsWith(".pdf")) {
+               attachedFile.setFileName(originalFileName + ".pdf");
+           }
+
+           // File Path
            String originalFilePath = attachedFile.getFilePath();
            if (!originalFilePath.endsWith(".pdf")) {
                attachedFile.setFilePath(originalFilePath + ".pdf");
