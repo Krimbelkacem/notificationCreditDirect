@@ -38,6 +38,9 @@ public class Dossier {
     /*@Column(name = "type_financement")
     private String typeFinancement;
 */
+    @ManyToOne
+    @JoinColumn(name = "directeur_agence_id")
+    private Compte directeurAgence;
 
 
     @ElementCollection
@@ -62,6 +65,10 @@ public class Dossier {
     @ManyToOne
     @JoinColumn(name = "direction_regionale_id")
     private DirectionRegionale assigneddirectionregionnale;
+
+
+
+
 
     @Column(name = "montant_habitation")
     private Double montantHabitation; // Montant de l'habitation

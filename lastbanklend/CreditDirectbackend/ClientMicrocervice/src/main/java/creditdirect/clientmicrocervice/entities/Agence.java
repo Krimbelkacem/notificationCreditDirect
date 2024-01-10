@@ -31,6 +31,9 @@ public class Agence {
     @Column(name = "adresse")
     private String adresse;
 
+
+
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany
     @JoinTable(
