@@ -1,6 +1,5 @@
 package creditdirect.clientmicrocervice.services;
 
-
 import creditdirect.clientmicrocervice.config.FileStorageProperties;
 import creditdirect.clientmicrocervice.entities.AttachedFile;
 
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,11 +50,16 @@ public class FileStorageService {
             String fileUuid = UUID.randomUUID().toString();
             String filePath = dossierDirectory.resolve(fileUuid + "-" + fileName).toString();
 
+            // Ensure the file name and path have ".pdf" extension
+            fileName = addPdfExtension(fileName);
+            filePath = addPdfExtension(filePath);
+
             try {
                 Files.copy(file.getInputStream(), Paths.get(filePath));
                 AttachedFile attachedFile = new AttachedFile();
                 attachedFile.setFileName(fileName);
                 attachedFile.setFilePath(filePath);
+                attachedFile.setFileType("pdf"); // Ensure file type is set to "pdf"
 
                 attachedFiles.add(attachedFile);
             } catch (IOException ex) {
@@ -63,5 +68,12 @@ public class FileStorageService {
         }
 
         return attachedFiles;
+    }
+
+    private String addPdfExtension(String fileNameOrPath) {
+        if (!fileNameOrPath.toLowerCase().endsWith(".pdf")) {
+            fileNameOrPath += ".pdf";
+        }
+        return fileNameOrPath;
     }
 }

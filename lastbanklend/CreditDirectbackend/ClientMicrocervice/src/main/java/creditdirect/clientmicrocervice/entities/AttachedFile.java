@@ -38,7 +38,7 @@ public class AttachedFile {
     public AttachedFile(String fileName, String filePath, String fileType) {
         this.fileName = fileName;
         this.filePath = filePath;
-        this.fileType = fileType;
+        this.fileType = "pdf";
     }
 
     public String getFileName() {

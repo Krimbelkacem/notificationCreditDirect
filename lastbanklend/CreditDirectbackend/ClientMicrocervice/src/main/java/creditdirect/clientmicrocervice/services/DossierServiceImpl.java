@@ -214,24 +214,11 @@ public class DossierServiceImpl implements DossierService {
 
        return dossierRepository.save(dossier);
    }*/
-   @Override
    public Dossier updateFilesForDossier(Long dossierId, MultipartFile[] files) {
        Dossier dossier = dossierRepository.findById(dossierId)
                .orElseThrow(() -> new RuntimeException("Dossier not found with id: " + dossierId));
 
        List<AttachedFile> attachedFiles = dossier.getAttachedFiles(); // Get existing attached files
-
-       // Store the new files and retrieve AttachedFile objects
-       List<AttachedFile> newAttachedFiles = fileStorageService.storeFilesForDossier(files, dossierId);
-
-       // Add the new AttachedFile objects to the existing list
-       if (attachedFiles == null) {
-           attachedFiles = new ArrayList<>();
-       }
-       attachedFiles.addAll(newAttachedFiles);
-
-       // Update the attached files list in the Dossier entity
-       dossier.setAttachedFiles(attachedFiles);
 
        // Add ".pdf" to the end of each file name and file path
        for (AttachedFile attachedFile : attachedFiles) {
@@ -248,10 +235,20 @@ public class DossierServiceImpl implements DossierService {
            }
        }
 
+       // Store the new files and retrieve AttachedFile objects
+       List<AttachedFile> newAttachedFiles = fileStorageService.storeFilesForDossier(files, dossierId);
+
+       // Add the new AttachedFile objects to the existing list
+       if (attachedFiles == null) {
+           attachedFiles = new ArrayList<>();
+       }
+       attachedFiles.addAll(newAttachedFiles);
+
+       // Update the attached files list in the Dossier entity
+       dossier.setAttachedFiles(attachedFiles);
+
        return dossierRepository.save(dossier);
    }
-
-
     @Override
     public Long getSingleAgenceIdByParticulierId(Long particulierId) {
         Particulier particulier = particulierRepository.findById(particulierId).orElse(null);
