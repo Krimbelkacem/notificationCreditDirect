@@ -10,7 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 @Data
 @Entity
@@ -35,9 +35,7 @@ public class Dossier {
     @JoinColumn(name= "type_credit")
     private TypeCredit typeCredit; // Change the type from TypeCredit to String
 
-    /*@Column(name = "type_financement")
-    private String typeFinancement;
-*/
+
     @ManyToOne
     @JoinColumn(name = "directeur_agence_id")
     private Compte directeurAgence;
@@ -121,7 +119,25 @@ public class Dossier {
     private LocalDateTime updatedAt;
 
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
+    @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL)
+    private List<DossierAction> actions = new ArrayList<>();
+
+    // Other methods...
+
+    public void setStatus(DossierStatus status) {
+        this.status = status;
+        DossierAction action = new DossierAction();
+        action.setStatus(status);
+        action.setActionDate(LocalDateTime.now());
+        action.setDossier(this); // Set the dossier in the action
+        this.actions.add(action);
+    }
+
+   public List<DossierAction> getActions() {
+        return Collections.unmodifiableList(actions);
+    }
 
 }
 

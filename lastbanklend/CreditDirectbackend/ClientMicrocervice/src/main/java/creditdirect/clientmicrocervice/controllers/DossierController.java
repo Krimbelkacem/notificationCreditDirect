@@ -43,7 +43,7 @@ public class DossierController {
     }
 ///////////////get all dossiers////////////////////
     @GetMapping("/all")
-    @PreAuthorize("hasRole('admin')")
+
     public ResponseEntity<List<Dossier>> getAllDossiers() {
         List<Dossier> dossiers = dossierService.getAllDossiers();
         return new ResponseEntity<>(dossiers, HttpStatus.OK);
@@ -133,7 +133,7 @@ public class DossierController {
     @DeleteMapping("/{dossierId}/files/{fileName}")
     public ResponseEntity<String> deleteFileFromDossier(
             @PathVariable Long dossierId,
-            @PathVariable String fileName) {
+            @RequestBody String fileName) {
 
         boolean isDeleted = dossierService.deleteFileByDossierIdAndFileName(dossierId, fileName);
 
