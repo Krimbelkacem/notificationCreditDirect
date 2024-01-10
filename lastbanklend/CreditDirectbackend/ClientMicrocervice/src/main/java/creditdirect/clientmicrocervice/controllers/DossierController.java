@@ -130,7 +130,7 @@ public class DossierController {
     //////////////////////delete file
 
 
-    @DeleteMapping("/{dossierId}/files/{fileName}")
+    @DeleteMapping("/{dossierId}/files")
     public ResponseEntity<String> deleteFileFromDossier(
             @PathVariable Long dossierId,
             @RequestBody String fileName) {
