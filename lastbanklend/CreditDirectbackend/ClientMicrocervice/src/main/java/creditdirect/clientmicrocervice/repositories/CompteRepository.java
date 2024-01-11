@@ -14,4 +14,5 @@ public interface CompteRepository extends JpaRepository<Compte, Long> {
 
     Compte findByNin(String nin);
 
+    boolean existsByNin(String nin);
 }

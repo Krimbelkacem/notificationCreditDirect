@@ -118,12 +118,12 @@ public class Dossier {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL)
     private List<Commentaire> commentaires = new ArrayList<>();
 
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL)
     private List<DossierAction> actions = new ArrayList<>();
 
