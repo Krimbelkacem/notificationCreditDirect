@@ -130,11 +130,11 @@ public class DossierController {
     //////////////////////delete file
 
 
-    @DeleteMapping("/{dossierId}/files")
+    @DeleteMapping("/{dossierId}/files/{fileName}")
     public ResponseEntity<String> deleteFileFromDossier(
             @PathVariable Long dossierId,
-            @RequestBody String fileName) {
-
+            @PathVariable String fileName) {
+System.out.println(fileName);
         boolean isDeleted = dossierService.deleteFileByDossierIdAndFileName(dossierId, fileName);
 
         if (isDeleted) {
