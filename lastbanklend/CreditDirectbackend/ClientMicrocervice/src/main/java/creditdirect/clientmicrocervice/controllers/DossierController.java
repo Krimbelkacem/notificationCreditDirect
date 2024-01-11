@@ -108,15 +108,11 @@ public class DossierController {
 ////////////////
     @PutMapping("/{dossierId}/mark-as-traitee")
     public void markDossierAsTraitee(@PathVariable Long dossierId) {
+        System.out.println((dossierId));
         dossierService.updateDossierStatusToTraitee(dossierId);
     }
 
-
-
-
-
     ///////////////////////Renvoyer"  nn
-
 
     @PutMapping("/{idDossier}/RenvoyerDossier/{idCompte}")
     public ResponseEntity<String> updateStatusToRenvoyer(
@@ -135,9 +131,6 @@ public class DossierController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
-
-
-
 /////////once the client validate dossiers asign it to agence or diretion re
 
     @PostMapping("/assign-agency/{dossierId}")
@@ -145,7 +138,6 @@ public class DossierController {
         Dossier updatedDossier = dossierService.affectiondossieragence(dossierId);
         return ResponseEntity.ok(updatedDossier);
     }
-
     //////////////////////delete file
 
     @DeleteMapping("/{dossierId}/files/{fileName}")
@@ -161,19 +153,14 @@ System.out.println(fileName);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found or dossier not found.");
         }
     }
-
-
-    //////////////
-
+    //////////////sendmultipletoDirectreur
     @PostMapping("/sendmultipletoDirectreur")
     public ResponseEntity<String> updateDossiersStatusToTraitee(@RequestBody List<Long> dossierIds) {
         dossierService.updateDossiersStatusToTraitee(dossierIds);
         return new ResponseEntity<>("Dossier statuses updated to TRAITEE", HttpStatus.OK);
     }
 
-    ///////////////
-
-
+    ///////////////getDossiersByAgence
 
     @GetMapping("/agence/{agenceId}")
     public ResponseEntity<List<Dossier>> getDossiersByAgence(@PathVariable Long agenceId) {
@@ -187,15 +174,7 @@ System.out.println(fileName);
     }
 
 
-    @PutMapping("/{dossierId}/mark-as-ACCEPTER")
-    public void markDossierAsACCEPTER(@PathVariable Long dossierId) {
-        dossierService.updateDossierStatusDirector_ACCEPTED(dossierId);
-    }
 
-    @PutMapping("/{dossierId}/mark-as-REFUSE")
-    public void markDossierAsREFUSE(@PathVariable Long dossierId) {
-        dossierService.updateDossierStatusDirector_ACCEPTED(dossierId);
-    }
 
     @Autowired
     private FileStorageProperties fileStorageProperties;
@@ -230,5 +209,16 @@ System.out.println(fileName);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @PutMapping("/{dossierId}/accept")
+    public ResponseEntity<String> setDossierStatusToAccepter(@PathVariable Long dossierId) {
+        System.out.print(dossierId);
+        dossierService.setStatusToAccepter(dossierId);
+        return ResponseEntity.ok("Dossier status set to ACCEPTER successfully.");
+    }
 
+    @PutMapping("/{dossierId}/refuse")
+    public ResponseEntity<String> setDossierStatusToRefuser(@PathVariable Long dossierId) {
+        dossierService.setStatusToRefuser(dossierId);
+        return ResponseEntity.ok("Dossier status set to REFUSER successfully.");
+    }
 }

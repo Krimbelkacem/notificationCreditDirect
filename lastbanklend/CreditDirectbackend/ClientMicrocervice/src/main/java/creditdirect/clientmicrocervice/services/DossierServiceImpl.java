@@ -394,23 +394,9 @@ public class DossierServiceImpl implements DossierService {
         dossiersToUpdate.forEach(dossier -> dossier.setStatus(DossierStatus.TRAITEE));
         dossierRepository.saveAll(dossiersToUpdate);
     }
-    @Override
-    public void updateDossierStatusDirector_ACCEPTED(Long dossierId) {
-        Optional<Dossier> dossierOptional = dossierRepository.findById(dossierId);
-        dossierOptional.ifPresent(dossier -> {
-            dossier.setStatus(DossierStatus.ACCEPTER);
-            dossierRepository.save(dossier);
-        });
-    }
 
-    @Override
-    public void updateDossierStatusDirector_REFUSE(Long dossierId) {
-        Optional<Dossier> dossierOptional = dossierRepository.findById(dossierId);
-        dossierOptional.ifPresent(dossier -> {
-            dossier.setStatus(DossierStatus.REFUSER);
-            dossierRepository.save(dossier);
-        });
-    }
+
+
     @Autowired
     private CommentaireRepository commentaireRepository;
     @Override
@@ -442,6 +428,10 @@ public class DossierServiceImpl implements DossierService {
         } else {
             throw new RuntimeException("Dossier not found with id: " + idDossier);
         }
+
+
+
+
     }
 
 
@@ -503,5 +493,32 @@ public boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName)
     public byte[] downloadFileByDossierIdAndFileName(Long dossierId, String fileName) throws IOException {
         Path filePath = Paths.get(BASE_UPLOAD_DIR, String.valueOf(dossierId), fileName);
         return Files.readAllBytes(filePath);
+    }
+
+    @Override
+    @Transactional
+    public void setStatusToAccepter(Long dossierId) {
+        Dossier dossier = dossierRepository.findById(dossierId)
+                .orElseThrow(() -> new RuntimeException("Dossier not found with ID: " + dossierId));
+
+        // Update dossier status to ACCEPTER
+        dossier.setStatus(DossierStatus.ACCEPTER);
+
+        // Save the updated dossier
+        dossierRepository.save(dossier);
+    }
+
+
+    @Override
+    @Transactional
+    public void setStatusToRefuser(Long dossierId) {
+        Dossier dossier = dossierRepository.findById(dossierId)
+                .orElseThrow(() -> new RuntimeException("Dossier not found with ID: " + dossierId));
+
+        // Update dossier status to REFUSER
+        dossier.setStatus(DossierStatus.REFUSER);
+
+        // Save the updated dossier
+        dossierRepository.save(dossier);
     }
 }
