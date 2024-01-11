@@ -161,78 +161,116 @@ public ResponseEntity<?> loginWithClientInfo(@RequestBody Map<String, String> cr
     /////////////////////////activer compte client via email////////////////////////////
     @GetMapping("/activate")
     public ResponseEntity<String> activateClientByEmail(@RequestParam("email") String email) {
-        clientService.activateClientByEmail(email);
+        try {
+            clientService.activateClientByEmail(email);
 
-        String htmlResponse = "<html>"
-                + "<head>"
-                + "<title>Activation Successful</title>"
-                + "<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&subset=devanagari,latin-ext\">"
-                + "<style>"
-                + "* {"
-                + "  padding: 0;"
-                + "  margin: 0;"
-                + "  box-sizing: border-box;"
-                + "  font-family: 'Poppins', sans-serif;"
-                + "}"
-                + "body {"
-                + "  background-color: #343a40;"
-                + "  display: flex;"
-                + "  justify-content: center;"
-                + "  align-items: center;"
-                + "  min-height: 100vh;"
-                + "  user-select: none;"
-                + "}"
-                + ".card {"
-                + "  border-radius: 10px;"
-                + "  filter: drop-shadow(0 5px 10px 0 #ffffff);"
-                + "  width: 400px;"
-                + "  height: 180px;"
-                + "  background-color: #ffffff;"
-                + "  padding: 20px;"
-                + "  position: relative;"
-                + "  z-index: 0;"
-                + "  overflow: hidden;"
-                + "  transition: 0.6s ease-in;"
-                + "}"
-                + ".card::before {"
-                + "  content: '';"
-                + "  position: absolute;"
-                + "  z-index: -1;"
-                + "  top: -15px;"
-                + "  right: -15px;"
-                + "  background: #7952b3;"
-                + "  height: 220px;"
-                + "  width: 25px;"
-                + "  border-radius: 32px;"
-                + "  transform: scale(1);"
-                + "  transform-origin: 50% 50%;"
-                + "  transition: transform 0.25s ease-out;"
-                + "}"
-                + ".card:hover::before {"
-                + "  transition-delay: 0.2s;"
-                + "  transform: scale(40);"
-                + "}"
-                + ".card:hover {"
-                + "  color: #ffffff;"
-                + "}"
-                + ".card p {"
-                + "  padding: 10px 0;"
-                + "}"
-                + "</style>"
-                + "</head>"
-                + "<body>"
-                + "<div class=\"row\">"
-                + "<div class=\"card\">"
-                + "<h4>Client Activation</h4>"
-                + "<p>Client with email " + email + " has been activated.</p>"
-                + "</div>"
-                + "</div>"
-                + "</body>"
-                + "</html>";
+            String htmlResponse = "<!DOCTYPE html>\n" +
+                    "<html>\n" +
+                    "<head>\n" +
+                    "  <link href=\"https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap\" rel=\"stylesheet\">\n" +
+                    "</head>\n" +
+                    "<style>\n" +
+                    "  body {\n" +
+                    "    text-align: center;\n" +
+                    "    padding: 40px 0;\n" +
+                    "    background: #EBF0F5;\n" +
+                    "  }\n" +
+                    "\n" +
+                    "  h1 {\n" +
+                    "    color: #88B04B;\n" +
+                    "    font-family: \"Nunito Sans\", \"Helvetica Neue\", sans-serif;\n" +
+                    "    font-weight: 900;\n" +
+                    "    font-size: 40px;\n" +
+                    "    margin-bottom: 10px;\n" +
+                    "  }\n" +
+                    "\n" +
+                    "  p {\n" +
+                    "    color: #404F5E;\n" +
+                    "    font-family: \"Nunito Sans\", \"Helvetica Neue\", sans-serif;\n" +
+                    "    font-size: 20px;\n" +
+                    "    margin: 0;\n" +
+                    "  }\n" +
+                    "\n" +
+                    "  i {\n" +
+                    "    color: #9ABC66;\n" +
+                    "    font-size: 100px;\n" +
+                    "    line-height: 200px;\n" +
+                    "    margin-left: -15px;\n" +
+                    "  }\n" +
+                    "\n" +
+                    "  .card {\n" +
+                    "    background: white;\n" +
+                    "    padding: 60px;\n" +
+                    "    border-radius: 4px;\n" +
+                    "    box-shadow: 0 2px 3px #C8D0D8;\n" +
+                    "    display: inline-block;\n" +
+                    "    margin: 0 auto;\n" +
+                    "  }\n" +
+                    "</style>\n" +
+                    "\n" +
+                    "<body>\n" +
+                    "  <div class=\"card\">\n" +
+                    "    <div style=\"border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;\">\n" +
+                    "      <i class=\"checkmark\">✓</i>\n" +
+                    "    </div>\n" +
+                    "    <h1>Success</h1>\n" +
+                    "    <p>Votre compte a ete activer avec succes!</p>\n" +
+                    "  </div>\n" +
+                    "</body>\n" +
+                    "</html>";
 
-        return ResponseEntity.status(HttpStatus.OK).body(htmlResponse);
+            return ResponseEntity.status(HttpStatus.OK).body(htmlResponse);
+        } catch (Exception e) {
+            // Handle activation failure or other exceptions
+            String errorHtmlResponse = "<!DOCTYPE html>\n" +
+                    "<html>\n" +
+                    "<head>\n" +
+                    "  <link href=\"https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap\" rel=\"stylesheet\">\n" +
+                    "</head>\n" +
+                    "<style>\n" +
+                    "  body {\n" +
+                    "    text-align: center;\n" +
+                    "    padding: 40px 0;\n" +
+                    "    background: #EBF0F5;\n" +
+                    "  }\n" +
+                    "\n" +
+                    "  h1 {\n" +
+                    "    color: #FF0000;\n" +
+                    "    font-family: \"Nunito Sans\", \"Helvetica Neue\", sans-serif;\n" +
+                    "    font-weight: 900;\n" +
+                    "    font-size: 40px;\n" +
+                    "    margin-bottom: 10px;\n" +
+                    "  }\n" +
+                    "\n" +
+                    "  p {\n" +
+                    "    color: #404F5E;\n" +
+                    "    font-family: \"Nunito Sans\", \"Helvetica Neue\", sans-serif;\n" +
+                    "    font-size: 20px;\n" +
+                    "    margin: 0;\n" +
+                    "  }\n" +
+                    "\n" +
+                    "  .card {\n" +
+                    "    background: white;\n" +
+                    "    padding: 60px;\n" +
+                    "    border-radius: 4px;\n" +
+                    "    box-shadow: 0 2px 3px #C8D0D8;\n" +
+                    "    display: inline-block;\n" +
+                    "    margin: 0 auto;\n" +
+                    "  }\n" +
+                    "</style>\n" +
+                    "\n" +
+                    "<body>\n" +
+                    "  <div class=\"card\">\n" +
+                    "    <h1>Error</h1>\n" +
+                    "    <p>Activation for the account with email " + email + " has failed.</p>\n" +
+                    "    <p>Error: " + e.getMessage() + "</p>\n" +
+                    "  </div>\n" +
+                    "</body>\n" +
+                    "</html>";
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorHtmlResponse);
+        }
     }
-
 
 ///////////////envoyer un email de confirmation///////////////////////
 
