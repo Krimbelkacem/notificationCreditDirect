@@ -49,5 +49,9 @@ public interface DossierService {
     List<Dossier> getAllDossiersByAgence(Long assignedAgence);
     byte[] downloadFileByDossierIdAndFileName(Long dossierId, String fileName) throws IOException;
 
+    void updateDossierStatusDirector_ACCEPTED(Long dossierId);
+
+    void updateDossierStatusDirector_REFUSE(Long dossierId);
+
     void updateStatusToRenvoyer(Long idDossier, Long idCompte, String comment);
 }

@@ -394,7 +394,23 @@ public class DossierServiceImpl implements DossierService {
         dossiersToUpdate.forEach(dossier -> dossier.setStatus(DossierStatus.TRAITEE));
         dossierRepository.saveAll(dossiersToUpdate);
     }
+    @Override
+    public void updateDossierStatusDirector_ACCEPTED(Long dossierId) {
+        Optional<Dossier> dossierOptional = dossierRepository.findById(dossierId);
+        dossierOptional.ifPresent(dossier -> {
+            dossier.setStatus(DossierStatus.ACCEPTER);
+            dossierRepository.save(dossier);
+        });
+    }
 
+    @Override
+    public void updateDossierStatusDirector_REFUSE(Long dossierId) {
+        Optional<Dossier> dossierOptional = dossierRepository.findById(dossierId);
+        dossierOptional.ifPresent(dossier -> {
+            dossier.setStatus(DossierStatus.REFUSER);
+            dossierRepository.save(dossier);
+        });
+    }
     @Autowired
     private CommentaireRepository commentaireRepository;
     @Override

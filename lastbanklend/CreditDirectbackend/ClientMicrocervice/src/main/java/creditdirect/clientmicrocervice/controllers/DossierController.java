@@ -186,6 +186,17 @@ System.out.println(fileName);
         return ResponseEntity.ok(dossiers);
     }
 
+
+    @PutMapping("/{dossierId}/mark-as-ACCEPTER")
+    public void markDossierAsACCEPTER(@PathVariable Long dossierId) {
+        dossierService.updateDossierStatusDirector_ACCEPTED(dossierId);
+    }
+
+    @PutMapping("/{dossierId}/mark-as-REFUSE")
+    public void markDossierAsREFUSE(@PathVariable Long dossierId) {
+        dossierService.updateDossierStatusDirector_ACCEPTED(dossierId);
+    }
+
     @Autowired
     private FileStorageProperties fileStorageProperties;
 
