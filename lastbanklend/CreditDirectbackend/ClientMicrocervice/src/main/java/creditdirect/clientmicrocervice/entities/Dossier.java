@@ -123,11 +123,10 @@ public class Dossier {
 
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
     @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL)
     private List<DossierAction> actions = new ArrayList<>();
 
-    // Other methods...
+
 
     public void setStatus(DossierStatus status) {
         this.status = status;

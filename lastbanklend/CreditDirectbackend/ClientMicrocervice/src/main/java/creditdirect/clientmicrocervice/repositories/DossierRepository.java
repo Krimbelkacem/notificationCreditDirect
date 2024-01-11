@@ -27,4 +27,6 @@ public interface DossierRepository extends JpaRepository<Dossier, Long> {
 
 
     List<Dossier> findAllByAssignedagence(Agence assignedAgence);
+
+
 }

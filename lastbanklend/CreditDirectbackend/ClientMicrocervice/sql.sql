@@ -41,7 +41,7 @@ INSERT INTO Wilaya (wilaya_name) VALUES ('Boumerdes');
 INSERT INTO Commune (nom, code_postal, wilaya_id) VALUES ('Tizi Ouzou', '15000', 1);
 INSERT INTO Commune (nom, code_postal, wilaya_id) VALUES ('Draa El Mizan', '15005', 1);
 INSERT INTO Commune (nom, code_postal, wilaya_id) VALUES ('Tizi Gheniff', '15020', 1);
-INSERT INTO Commune (nom, code_postal, wilaya_id) VALUES ('Freha', '15212', 1);
+INSERT INTO Commune (nom, code_postal, wilaya_id) VALUES ('Freha', '15012', 1);
 INSERT INTO Commune (nom, code_postal, wilaya_id) VALUES ('Azazga', '15001', 1);
 INSERT INTO Commune (nom, code_postal, wilaya_id) VALUES ('Aïn El Hammam', '15002', 1);
 INSERT INTO Commune (nom, code_postal, wilaya_id) VALUES ('Larbaâ Nath Irathen', '15006', 1);

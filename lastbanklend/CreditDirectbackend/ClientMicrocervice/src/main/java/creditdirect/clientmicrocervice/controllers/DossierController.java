@@ -111,6 +111,33 @@ public class DossierController {
         dossierService.updateDossierStatusToTraitee(dossierId);
     }
 
+
+
+
+
+    ///////////////////////Renvoyer"
+
+
+    @PutMapping("/{idDossier}/RenvoyerDossier/{idCompte}")
+    public ResponseEntity<String> updateStatusToRenvoyer(
+            @PathVariable Long idDossier,
+            @PathVariable Long idCompte,
+            @RequestBody(required = false) String comment) {
+
+        try {
+            // Call the service method to update Dossier and Commentaire
+            dossierService.updateStatusToRenvoyer(idDossier, idCompte, comment);
+
+            // If no exception is thrown, everything is successful
+            return ResponseEntity.ok("Dossier and Commentaire updated successfully");
+        } catch (Exception e) {
+            // Handle exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
+
+
+
 /////////once the client validate dossiers asign it to agence or diretion re
 
     @PostMapping("/assign-agency/{dossierId}")

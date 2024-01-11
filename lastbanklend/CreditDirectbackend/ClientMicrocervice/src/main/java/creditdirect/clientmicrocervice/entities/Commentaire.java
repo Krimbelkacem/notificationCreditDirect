@@ -22,6 +22,10 @@ public class Commentaire {
     @JoinColumn(name = "Dossier_id")
     private Dossier dossier;
 
+    @ManyToOne // Many comments can be associated with one compte
+    @JoinColumn(name = "compte_id")
+    private Compte compte;
+
     @Column(name = "comment")
     private String comment;
 

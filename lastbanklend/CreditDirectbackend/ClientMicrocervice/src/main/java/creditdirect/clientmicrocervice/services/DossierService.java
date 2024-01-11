@@ -48,4 +48,6 @@ public interface DossierService {
 
     List<Dossier> getAllDossiersByAgence(Long assignedAgence);
     byte[] downloadFileByDossierIdAndFileName(Long dossierId, String fileName) throws IOException;
+
+    void updateStatusToRenvoyer(Long idDossier, Long idCompte, String comment);
 }

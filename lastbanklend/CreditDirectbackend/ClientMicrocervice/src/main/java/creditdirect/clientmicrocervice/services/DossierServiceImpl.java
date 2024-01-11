@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -393,6 +394,42 @@ public class DossierServiceImpl implements DossierService {
         dossiersToUpdate.forEach(dossier -> dossier.setStatus(DossierStatus.TRAITEE));
         dossierRepository.saveAll(dossiersToUpdate);
     }
+
+    @Autowired
+    private CommentaireRepository commentaireRepository;
+    @Override
+    public void updateStatusToRenvoyer(Long idDossier, Long idCompte, String comment) {
+        Dossier dossier = dossierRepository.findById(idDossier).orElse(null);
+        Compte compte = compteRepository.findById(idCompte).orElseThrow(() -> new RuntimeException("Compte not found with id: " + idCompte));
+
+        if (dossier != null) {
+            dossier.setStatus(DossierStatus.RENVOYER);
+
+            // Save the updated dossier with the new status
+            dossierRepository.save(dossier);
+
+            // Check if comment is provided and save it to Commentaire entity
+            if (comment != null && !comment.isEmpty()) {
+                Commentaire commentaire = new Commentaire();
+                commentaire.setDossier(dossier);
+                // Set only the content of the comment
+                commentaire.setComment(comment);
+                commentaire.setStatus(dossier.getStatus());
+                commentaire.setCommentDate(LocalDateTime.now());
+
+                // Set the associated Compte
+                commentaire.setCompte(compte);
+
+                // Save the comment
+                commentaireRepository.save(commentaire);
+            }
+        } else {
+            throw new RuntimeException("Dossier not found with id: " + idDossier);
+        }
+    }
+
+
+
 
 
     ///////////////////////delete file by file name and id dossier/////////////////
