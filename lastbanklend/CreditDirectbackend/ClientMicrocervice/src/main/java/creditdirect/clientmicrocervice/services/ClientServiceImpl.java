@@ -86,21 +86,30 @@ public class ClientServiceImpl implements ClientService {
     }
     @Override
     public Map<String, Object> loginWithClientInfo(String email, String password) {
-        Client client = clientRepository.findByEmail(email);
-        Map<String, Object> response = new HashMap<>();
+        try {
+            Client client = clientRepository.findByEmail(email);
+            Map<String, Object> response = new HashMap<>();
 
-        if (client != null && passwordEncoder.matches(password, client.getPassword())) {
-            String token = generateToken(client);
-            String clientType = getClientType(client);
+            if (client != null && passwordEncoder.matches(password, client.getPassword())) {
+                if (client.isActivated()) {
+                    String token = generateToken(client);
+                    String clientType = getClientType(client);
 
-            response.put("client", client); // Adding client information to the response
-            response.put("role", clientType); // Adding client type to the response
-            response.put("token", token);
-        } else {
-            response.put("error", "Authentication failed");
+                    response.put("client", client); // Adding client information to the response
+                    response.put("role", clientType); // Adding client type to the response
+                    response.put("token", token);
+                } else {
+                    response.put("error", "Account is not activated");
+                }
+            } else {
+                response.put("error", "Invalid credentials");
+            }
+
+            return response;
+        } catch (Exception e) {
+            // Handle other exceptions if necessary
+            throw new RuntimeException("Internal server error", e);
         }
-
-        return response;
     }
     private String getClientType(Client client) {
         if (client instanceof Particulier) {

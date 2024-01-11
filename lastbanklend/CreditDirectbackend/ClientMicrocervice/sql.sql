@@ -108,24 +108,3 @@ INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (7, 6);
 INSERT INTO Agence_Commune (agence_id, commune_id) VALUES (9, 1);
 
 
-INSERT INTO `comptes` (`id`, `agence_id`, `created_at`, `nin`, `password`, `role`) VALUES
-                                                                                       (1, 1, '2024-01-11 18:58:15.000000', 'c100', '$2a$10$4MTTtd5XkcBh.cEu2flwCeFjKjP2CUwxOgBPa.D0zon.7CrbQT50a', 'courtier'),
-                                                                                       (2, 2, '2024-01-11 19:28:46.000000', 'c200', '$2a$10$tUjT1LiP/9i/veBwfuvYcezcDbHAzfbdXiBrphmBKsnSbtPfaPnxy', 'courtier'),
-                                                                                       (3, 3, '2024-01-11 19:28:58.000000', 'c300', '$2a$10$nfFiqafUWwRNlgANOb0NGebtuSkOVuyhUYyV9VqhPh78RSEoUcsUG', 'courtier'),
-                                                                                       (4, 4, '2024-01-11 19:29:19.000000', 'c400', '$2a$10$vTTfAu8Qu4ggyT3xADp7Duiqq2UPq6YqZuL3HQ96956XPGRwlwd9i', 'courtier'),
-                                                                                       (5, 5, '2024-01-11 19:29:33.000000', 'c500', '$2a$10$Se8.3jzAtb2t68kLrjrs2Onm4m8yjcZgiNQxnpernjH3MesSMsz7W', 'courtier'),
-                                                                                       (6, 6, '2024-01-11 19:29:47.000000', 'c600', '$2a$10$rRdV3J5bMenTFqtdvdJmNeL.KfQ.kTO7Tt03/56lNEQ1fiuVafmm.', 'courtier'),
-                                                                                       (7, 7, '2024-01-11 19:29:58.000000', 'c700', '$2a$10$NMNE/gAFhWDDq1bqmE1xQ.7H1cDIQefF7MGuUpDIPt27/xs1i.zq6', 'courtier'),
-                                                                                       (8, 8, '2024-01-11 19:30:21.000000', 'c800', '$2a$10$luz/yRI49QWIkouUV.5Viu5sCN/74iV5wRgLaNVcmP.xGjHs/5bVm', 'courtier'),
-                                                                                       (9, 9, '2024-01-11 19:31:05.000000', 'c900', '$2a$10$TzdBxWcE2qmmbaNiPR1n6e5cYwxmNfeMeQh7Yhwt./FMJhiFYQbg6', 'courtier'),
-                                                                                       (10, 10, '2024-01-11 19:31:26.000000', 'c1000', '$2a$10$e.a7czp3tNnGNeDy6L09hOG0GwW5dguDOhFuI.ctR3xRucOfJ66OG', 'courtier'),
-                                                                                       (11, 1, '2024-01-11 19:35:17.000000', 'd001', '$2a$10$W5aRu3oPXcZJIKCIq.9EFOX0FhjFvgXp50QAkB5H6VGxqkO5zBKJ6', 'directeur'),
-                                                                                       (12, 2, '2024-01-11 19:35:29.000000', 'd002', '$2a$10$hLMwhpOAfcvNRflrb/O9yOCdhRjDtwk6MYFMCM9/RCaauIq/Bbu3.', 'directeur'),
-                                                                                       (13, 3, '2024-01-11 19:35:42.000000', 'd003', '$2a$10$hJeBaRFlWg.lRg7O7LOZIegisCjoN0J7GKo55vLzqShj9p.2nqSYy', 'directeur'),
-                                                                                       (14, 4, '2024-01-11 19:35:53.000000', 'd004', '$2a$10$3uXLSO0oWzx/hlyqjqogo.YF7TJgVg1W5Y/JOzfmF8HxcRXJDc2q.', 'directeur'),
-                                                                                       (15, 5, '2024-01-11 19:36:11.000000', 'd005', '$2a$10$zkCTrQ/QqENTRZbFPw5.M.AXIHgbLrnXYUubMVqdQYSmSEQoYG6Bu', 'directeur'),
-                                                                                       (16, 6, '2024-01-11 19:36:31.000000', 'd006', '$2a$10$RjwLyuymL2J5kDS0Hc/3d.iDv.pHX4TXOkcQK2Zr.oZIWfSErlgY.', 'directeur'),
-                                                                                       (17, 7, '2024-01-11 19:36:43.000000', 'd007', '$2a$10$2/CW80Ti04z21X.EQnIETONm5gDMrVnm8cBgqPjbX2S939DVxx542', 'directeur'),
-                                                                                       (18, 8, '2024-01-11 19:36:59.000000', 'd008', '$2a$10$mCVfU0sQZgCIqD2UMQhW7eTqD46BluHFCPl2r77ar1gNs3A8rR.Ly', 'directeur'),
-                                                                                       (19, 9, '2024-01-11 19:37:16.000000', 'd009', '$2a$10$FpFFDxWY2XddmQ7UegLpruZ6i3aT.228i9l305/Zd0JfpTWNs2r1e', 'directeur'),
-                                                                                       (20, 10, '2024-01-11 19:37:32.000000', 'd1000', '$2a$10$fuXRaz4x.l/5f98XvSY8.ePyVrQzr2Y8gIzthPyIJLUIZBdq08NoC', 'directeur');

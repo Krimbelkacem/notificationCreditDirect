@@ -61,20 +61,31 @@ public class ClientController {
 ////////////////////////client login/////////////////////////
 @PostMapping("/login")
 public ResponseEntity<?> loginWithClientInfo(@RequestBody Map<String, String> credentials) {
-    String email = credentials.get("email");
-    String password = credentials.get("password");
+    try {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
 
-    if (email == null || password == null) {
-        return new ResponseEntity<>("Email or password missing", HttpStatus.BAD_REQUEST);
-    }
+        if (email == null || password == null) {
+            return new ResponseEntity<>("Email or password missing", HttpStatus.BAD_REQUEST);
+        }
 
-    Map<String, Object> authenticationResult = clientService.loginWithClientInfo(email, password);
+        Map<String, Object> authenticationResult = clientService.loginWithClientInfo(email, password);
 
-    if (authenticationResult.containsKey("error")) {
-        return new ResponseEntity<>(authenticationResult.get("error"), HttpStatus.UNAUTHORIZED);
-    } else {
-        // Return client info and token in the response
-        return ResponseEntity.ok(authenticationResult);
+        if (authenticationResult.containsKey("error")) {
+            String errorMessage = (String) authenticationResult.get("error");
+
+            if ("Authentication failed".equals(errorMessage)) {
+                return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            // Return client info and token in the response
+            return ResponseEntity.ok(authenticationResult);
+        }
+    } catch (Exception e) {
+        // Handle other exceptions if necessary
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
     }
 }
     ////////////encien loginnn
