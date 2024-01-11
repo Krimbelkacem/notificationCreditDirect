@@ -118,6 +118,9 @@ public class Dossier {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL)
+    private List<Commentaire> commentaires = new ArrayList<>();
+
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
