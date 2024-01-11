@@ -188,14 +188,14 @@ System.out.println(fileName);
     /////////////////////////////////////////
     ////////////////////update status //////////////
     //////////////////////////////////    put mehodes /////////
-    @PutMapping("/{dossierId}/accept")
+    @PutMapping("/{dossierId}/mark-as-accepter")
     public ResponseEntity<String> setDossierStatusToAccepter(@PathVariable Long dossierId) {
         System.out.print(dossierId);
         dossierService.setStatusToAccepter(dossierId);
         return ResponseEntity.ok("Dossier status set to ACCEPTER successfully.");
     }
 
-    @PutMapping("/{dossierId}/refuse")
+    @PutMapping("/{dossierId}/mark-as-refuser")
     public ResponseEntity<String> setDossierStatusToRefuser(@PathVariable Long dossierId) {
         dossierService.setStatusToRefuser(dossierId);
         return ResponseEntity.ok("Dossier status set to REFUSER successfully.");
