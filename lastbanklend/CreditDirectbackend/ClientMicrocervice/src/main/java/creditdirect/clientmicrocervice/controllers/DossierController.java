@@ -1,7 +1,4 @@
 package creditdirect.clientmicrocervice.controllers;
-
-
-
 import creditdirect.clientmicrocervice.config.FileStorageProperties;
 import creditdirect.clientmicrocervice.entities.Dossier;
 import creditdirect.clientmicrocervice.kafka.KafkaProducer;
@@ -122,13 +119,7 @@ public class DossierController {
         return ResponseEntity.ok(updatedDossier);
     }
 
-
-
-
-
-
     //////////////////////delete file
-
 
     @DeleteMapping("/{dossierId}/files/{fileName}")
     public ResponseEntity<String> deleteFileFromDossier(
@@ -143,7 +134,6 @@ System.out.println(fileName);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found or dossier not found.");
         }
     }
-
 
 
     //////////////
