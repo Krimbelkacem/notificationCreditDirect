@@ -134,7 +134,7 @@ System.out.println(fileName);
         return new ResponseEntity<>("Dossier statuses updated to TRAITEE", HttpStatus.OK);
     }
 
-    ///////////////getDossiersByAgence
+    ///////////////getDossiersByAgenceid
 
     @GetMapping("/agence/{agenceId}")
     public ResponseEntity<List<Dossier>> getDossiersByAgence(@PathVariable Long agenceId) {
