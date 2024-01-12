@@ -42,6 +42,8 @@ public interface DossierService {
 
     void updateDossiersStatusToTraitee(List<Long> dossierIds);
 
+    List<Dossier> getAcceptedAndRejectedDossiersByCourtier(Long courtierId);
+
     //void deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
     boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName);
 

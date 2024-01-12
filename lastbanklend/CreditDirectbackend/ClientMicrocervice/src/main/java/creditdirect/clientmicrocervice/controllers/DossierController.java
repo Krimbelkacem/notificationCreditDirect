@@ -225,4 +225,14 @@ System.out.println(fileName);
         System.out.println((dossierId));
         dossierService.updateDossierStatusToTraitee(dossierId);
     }
+
+
+
+    /////////////////////
+    @GetMapping("/courtier/{courtierId}/alldossiers")
+    public List<Dossier> getAcceptedAndRejectedDossiersByCourtier(
+            @PathVariable Long courtierId
+    ) {
+        return dossierService.getAcceptedAndRejectedDossiersByCourtier(courtierId);
+    }
 }

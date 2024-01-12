@@ -17,10 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import jakarta.persistence.EntityManager;
 
@@ -435,7 +432,20 @@ public class DossierServiceImpl implements DossierService {
     }
 
 
+    @Override
 
+    public List<Dossier> getAcceptedAndRejectedDossiersByCourtier(Long courtierId) {
+        List<DossierStatus> desiredStatuses = Arrays.asList(
+                DossierStatus.ACCEPTER,
+                DossierStatus.REFUSER,
+                DossierStatus.RENVOYER,
+                DossierStatus.TRAITEMENT_ENCOURS,
+                DossierStatus.TRAITEE,
+                DossierStatus.NON_TRAITEE
+        );
+
+        return dossierRepository.findByAssignedCourtierIdAndStatusIn(courtierId, desiredStatuses);
+    }
 
 
     ///////////////////////delete file by file name and id dossier/////////////////
