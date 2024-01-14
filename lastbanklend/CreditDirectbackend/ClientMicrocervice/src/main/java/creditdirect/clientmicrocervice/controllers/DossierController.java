@@ -188,18 +188,33 @@ System.out.println(fileName);
     /////////////////////////////////////////
     ////////////////////update status //////////////
     //////////////////////////////////    put mehodes /////////
-    @PutMapping("/{dossierId}/accept")
-    public ResponseEntity<String> setDossierStatusToAccepter(@PathVariable Long dossierId) {
-        System.out.print(dossierId);
-        dossierService.setStatusToAccepter(dossierId);
+    @PutMapping("/{idDossier}/accept/{idCompte}")
+    public ResponseEntity<String> setDossierStatusToAccepter(
+            @PathVariable Long idDossier,
+            @PathVariable Long idCompte,
+            @RequestBody(required = false) String comment) {
+        // Log the dossierId for debugging purposes
+        System.out.print(idDossier);
+
+        // Set the dossier status to ACCEPTER and save the comment if provided
+        dossierService.setStatusToAccepter(idDossier, comment, idCompte);
+
+        // Return a success response
         return ResponseEntity.ok("Dossier status set to ACCEPTER successfully.");
     }
 
-    @PutMapping("/{dossierId}/refuse")
-    public ResponseEntity<String> setDossierStatusToRefuser(@PathVariable Long dossierId) {
-        dossierService.setStatusToRefuser(dossierId);
+    @PutMapping("/{dossierId}/refuse/{idCompte}")
+    public ResponseEntity<String> setDossierStatusToRefuser(
+            @PathVariable Long dossierId,
+            @PathVariable Long idCompte,
+            @RequestBody(required = false) String comment) {
+        // Set the dossier status to REFUSER and save the comment if provided
+        dossierService.setStatusToRefuser(dossierId, comment, idCompte);
+
+        // Return a success response
         return ResponseEntity.ok("Dossier status set to REFUSER successfully.");
     }
+
 
 
     @PutMapping("/{idDossier}/RenvoyerDossier/{idCompte}")
@@ -219,7 +234,6 @@ System.out.println(fileName);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
-
     @PutMapping("/{dossierId}/mark-as-traitee")
     public void markDossierAsTraitee(@PathVariable Long dossierId) {
         System.out.println((dossierId));

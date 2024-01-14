@@ -392,10 +392,14 @@ public class DossierServiceImpl implements DossierService {
         dossierRepository.saveAll(dossiersToUpdate);
     }
 
-
+////////////////////////////////////////////////
+    //////////////////////////
 
     @Autowired
     private CommentaireRepository commentaireRepository;
+
+
+
     @Override
     public void updateStatusToRenvoyer(Long idDossier, Long idCompte, String comment) {
         Dossier dossier = dossierRepository.findById(idDossier).orElse(null);
@@ -507,21 +511,51 @@ public boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName)
 
     @Override
     @Transactional
-    public void setStatusToAccepter(Long dossierId) {
-        Dossier dossier = dossierRepository.findById(dossierId)
-                .orElseThrow(() -> new RuntimeException("Dossier not found with ID: " + dossierId));
+    public void setStatusToAccepter(Long idDossier, String comment, Long idCompte) {
+        // Retrieve the dossier by its ID
+        Dossier dossier = dossierRepository.findById(idDossier)
+                .orElseThrow(() -> new RuntimeException("Dossier not found with ID: " + idDossier));
 
         // Update dossier status to ACCEPTER
         dossier.setStatus(DossierStatus.ACCEPTER);
 
-        // Save the updated dossier
+        // Save the updated dossier with the new status
         dossierRepository.save(dossier);
+
+        // Check if a comment is provided and save it to the Commentaire entity
+        if (comment != null && !comment.isEmpty()) {
+            // Create a new Commentaire instance
+            Commentaire commentaire = new Commentaire();
+
+            // Set the dossier for the comment
+            commentaire.setDossier(dossier);
+
+            // Set only the content of the comment
+            commentaire.setComment(comment);
+
+            // Set the status of the comment to the current dossier status
+            commentaire.setStatus(dossier.getStatus());
+
+            // Set the comment date to the current date and time
+            commentaire.setCommentDate(LocalDateTime.now());
+
+            // Retrieve the associated Compte by its ID
+            Compte compte = compteRepository.findById(idCompte)
+                    .orElseThrow(() -> new RuntimeException("Compte not found with ID: " + idCompte));
+
+            // Set the associated Compte for the comment
+            commentaire.setCompte(compte);
+
+            // Save the comment to the database
+            commentaireRepository.save(commentaire);
+        }
     }
 
 
     @Override
     @Transactional
-    public void setStatusToRefuser(Long dossierId) {
+    public void setStatusToRefuser(Long dossierId, String comment, Long idCompte) {
+        // Retrieve the dossier by its ID
         Dossier dossier = dossierRepository.findById(dossierId)
                 .orElseThrow(() -> new RuntimeException("Dossier not found with ID: " + dossierId));
 
@@ -530,5 +564,34 @@ public boolean deleteFileByDossierIdAndFileName(Long dossierId, String fileName)
 
         // Save the updated dossier
         dossierRepository.save(dossier);
+
+        // Check if a comment is provided and save it to the Commentaire entity
+        if (comment != null && !comment.isEmpty()) {
+            // Create a new Commentaire instance
+            Commentaire commentaire = new Commentaire();
+
+            // Set the dossier for the comment
+            commentaire.setDossier(dossier);
+
+            // Set only the content of the comment
+            commentaire.setComment(comment);
+
+            // Set the status of the comment to the current dossier status
+            commentaire.setStatus(dossier.getStatus());
+
+            // Set the comment date to the current date and time
+            commentaire.setCommentDate(LocalDateTime.now());
+
+            // Retrieve the associated Compte by its ID
+            Compte compte = compteRepository.findById(idCompte)
+                    .orElseThrow(() -> new RuntimeException("Compte not found with ID: " + idCompte));
+
+            // Set the associated Compte for the comment
+            commentaire.setCompte(compte);
+
+            // Save the comment to the database
+            commentaireRepository.save(commentaire);
+        }
     }
+
 }
