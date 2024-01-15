@@ -216,22 +216,7 @@ public class DossierServiceImpl implements DossierService {
        Dossier dossier = dossierRepository.findById(dossierId)
                .orElseThrow(() -> new RuntimeException("Dossier not found with id: " + dossierId));
 
-       List<AttachedFile> attachedFiles = dossier.getAttachedFiles(); // Get existing attached files
-
-       // Add ".pdf" to the end of each file name and file path
-       for (AttachedFile attachedFile : attachedFiles) {
-           // File Name
-           String originalFileName = attachedFile.getFileName();
-           if (!originalFileName.endsWith(".pdf")) {
-               attachedFile.setFileName(originalFileName + ".pdf");
-           }
-
-           // File Path
-           String originalFilePath = attachedFile.getFilePath();
-           if (!originalFilePath.endsWith(".pdf")) {
-               attachedFile.setFilePath(originalFilePath + ".pdf");
-           }
-       }
+       List<AttachedFile> attachedFiles = dossier.getAttachedFiles();
 
        // Store the new files and retrieve AttachedFile objects
        List<AttachedFile> newAttachedFiles = fileStorageService.storeFilesForDossier(files, dossierId);
@@ -247,6 +232,7 @@ public class DossierServiceImpl implements DossierService {
 
        return dossierRepository.save(dossier);
    }
+
     @Override
     public Long getSingleAgenceIdByParticulierId(Long particulierId) {
         Particulier particulier = particulierRepository.findById(particulierId).orElse(null);
